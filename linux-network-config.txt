@@ -1,0 +1,85 @@
+Network Interfaces
+------------------
+Network interface - how kernel links up software side of networking to hardware side
+ifconfig - tool that allows us to configure our network interfaces
+    - Runs on bootup and configures our interfaces through config files, can be manually modified
+    - On left side you see interface name and right side shows detailed info
+    - eth0 is first Ethernet card in machine, wlan0 is wireless interface, lo is loopback interface (good for debugging or connecting locally)
+    - HWaddr (MAC address of the interface)
+    - inet address (IPv4 address)
+    - inet6 (IPv6 address)
+    - YOu can also see subnet mask and broadcast address there as well
+
+Status of interfaces can be up or down (esentially, on or off)
+
+To create interface and bring it up
+$ ifconfig eth0 192.168.2.1 netmask 255.255.255.0 up    // assigns IP address and netmask to eth0 interface and turns it up
+
+To bring down an interface
+$ ifup eth0
+$ ifdown eth0
+
+ip - allows us to manipulate networking stack of a system
+
+To show interface info for all interfaces
+$ ip link show
+
+To show statistics of an interface
+$ ip -s link show eth0
+
+To show ip addresses allocated to interfaces
+$ ip address show
+
+To bring interfaces up and down
+$ ip link set eth0 up
+$ ip link set eth0 down
+
+To add an IP address to an interface
+$ ip address add 192.168.1.1/24 dev eth0
+
+route
+-----
+Add a new route
+$ sudo route add -net 192.168.2.1/23 gw 10.11.12.3
+
+Delete a route
+$ sudo route del -net 192.168.2.1/23
+
+You can also do this with the ip command
+Add a new route
+$ ip route add 192.168.2.1/23
+
+Delete a route
+$ ip route delete 192.168.2.1/23 via 10.11.12.3
+
+dhclient
+--------
+Most often you'll never need to statically set IP addresses, subnet masks, etc. bc we have DHCP
+dhclient starts up on boot and gets list of network interfaces from dhclient.conf file
+For each interface listed it tries to configure the interface using the DHCP protocol
+
+dhclient.leases keeps track of a list of leases across system reboots
+
+To obtain a fresh IP:
+$ sudo dhclient
+
+Network Manager
+---------------
+Most distros utilize the NetworkManager daemon to configure their networks automatically; gathers network hardware info, search for connections, etc.
+
+nm-tool     // reports NetworkManager's state and it's devices
+nmcli       // allows you to control and modify the NetworkManager
+
+arp
+---
+arp         // command to view the ARP cache
+
+The ARP cache is empty whehn a machine boots up and gets populated as packets are being sent to other hosts
+If we send a packet to a destination that isn't in the ARP cache, the following happens:
+    1. The source hosts creates the Ethernet frame with an ARP request packet
+    2. The source host broadcasts this frame to the entire network
+    3. If one of the hosts on the network knows the correct MAC address, it will send a reply packet and frame containing the MAC address
+    4. The source host adds the IP to MAC address mapping to the ARP cache and then proceeds with sending the packet
+
+Alternatively, you can use the following ip command
+$ ip neighbour show

@@ -1,0 +1,39 @@
+Linux Notes - file structure
+
+Linux Notes
+
+File structure
+
+/ - root directory
+/bin - essential user binaries (programs) that must be present when the system is mounted
+	- /usr/bin - may hold applications such as Google Chrome
+	- /bin - holds important system programs and utilities such as the bash shell
+/boot - contains the files needed to boot the system (boot loader and kernels)
+/dev - exposes devices as files, contains special files that represent these devices
+	- also contains pseudo-devices - virtual devices that don’t actually correspond to hardware
+		- /dev/random - produces random numbers
+		- /dev/null - produces no output and automatically discards all input
+/etc - contains system-wide config files
+/home - contains a home folder for each user which holds data files and user-specific config files
+	- each user has write access to their own home folder and must obtain elevated permissions to modify other 	files on the system
+/lib - contains libraries needed by binaries from /bin and /sbin
+	- /usr/lib holds libraries needed by /usr/bin
+/lost+found - any corrupted files will be placed here if a file system crashes
+/media - contains subdirectories where removable devices inserted into the computer are mounted
+/opt - contains subdirectories for optional software packages
+	- commonly used by proprietary software that doesn’t obey the standard file system hierarchy
+/proc - contains special files that represent system and process information
+	- similar to /dev in that it doesn’t contain standard files
+/root - home directory of root user, instead of being located at /home/root, is located at /root
+	- note: distinct from /, which is system root directory
+/run - app state files - gives apps a standard place to store transient files like sockets and process IDs
+/sbin - contains essential system admin binaries
+/selinux - contains special files used by /selinux, similar to /proc but for security
+/srv - data for services provided by the system
+	- ex. If you were using Apache to serve a website, you’d store the website’s files inside a directory in /sr
+/tmp - where apps store temporary files, these files are generally deleted whenever your system is restarted
+/usr - contains apps and files used by users, as opposed to apps and files used by the system
+	- also contains other directories, such as architecture-independent files like graphics in /usr/share
+	- where locally compiled apps install to by default
+/var - writable counterpart to /usr directory, which must be read-only in operation
+	- log files and everything else that would normally be written to /usr during normal operation are written here

@@ -1,0 +1,166 @@
+$ which command - lets you see where a command is getting the command form
+mkdir [-p] - -p means parent, you can specify children
+
+$ ls -F - -F lets you see file type (/ for directory, @ for link, * for exe)
+    -t - list files by time
+    -r - reverse order
+    -R - list files recursively
+    -d - list directories only
+    --color - colorize the output
+
+$ ls -l output:
+    permissions, links, owner, groups, date, filename
+    
+$ tree - similar to ls -R, but creates visual output
+    -d - list directories only
+    -C - colorize output
+
+Symbolic link - link that points to actual file or directory
+    - You can use the link as if it were the actual file
+    - Can be used to create a shortcut
+
+Ctrl+U - delete current line
+
+Permissions
+- - regular file
+d - directory
+l - symbolic link
+r - read - for dirs: allows file names in a dir to be read
+w - write - for dirs: allows entries to be modified within the directory
+x - execute - for dirs: allows accces to contents and metadata for entries
+u - user
+g - group
+o - other
+a - all
+
+Groups
+    Every user is in atleast one group, and can belong to many groups
+    $ groups - displays the groups a user is in
+
+chmod - stands for change mode
+chmod g+w file.txt - adds only write to group
+chmod u+rwx,g-x file.txt - adds rwx to user, removes execute from gorup
+chmod a=r file.txt - set all to read
+
+chgrp class file.txt - changes the group
+Sometimes dir permissions can affect file permissions, in which case you should start from the bottom directory checking permissions
+    and working your way up
+
+File creation mask determines default permissions (usually set by sysadmin)
+    umask [-S] [mode] - sets file creation mask to mode, if given , use -S to for symbolic notation
+        - reverse permissions as chmod
+    When you do umask with no parameters, you get the umask currently on
+    
+$ find - recursively finds files in path that match expression
+    -name pattern - find files and dirs that match pattern
+    -iname - like name, but ignores case
+    -ls - performas an ls on each of the found items
+    -mtime days - finds files that are x days old
+    -size num - finds files that are of size num
+    -newer file - finds files that are newer than file
+    -exec command {} \; - runn command against all files that are found
+
+ex. find /bin -iname makedev    - find something called makedev
+ex. find /bin - name *v  - anything ending with v
+ex. find . -mtime + 10 -mtime -13
+
+$ locate pattern - similar to find, faster than find command, results are not in real time, queries an index
+
+$ more - browse through a text file
+$ less - more features than more
+$ tail - output bottom of file
+    -f - follow the file (displays data as it is being written to the file)
+
+$ cp - copy, when something doesn't exist it just creates it
+    -i - interactice mode (asks to make sure you want to overwrite something)
+    -r - copy recursively
+
+$ mv - move or rename files and dirs
+    -i - interactive mode
+
+$ sort - sorts text in file
+    -k F - sort by key, F is file number
+    -r - sort in reverse order
+    -u - remove non-unique results
+
+$ tar - create, extract, or list contents of a tar archive
+    -c - create tar archive
+    -x - extract files from archive
+    -t - display table of contents
+    -v - be verbose
+    -z - use compression
+    -f file - use this file
+
+$ gzip - compress files
+$ gunzip - uncompress files
+$ gzcat - cat compressed files
+
+$ du - estimates file usage
+
+WILDCARDS
+* - matches zero or more characters
+    *.txt   - finds all files ending in txt
+    a*      - finds all files beginning with a
+    a*.txt  - finds all files beginning with a and ending with .txt
+? - matches exactly one character
+    ?.txt   - all 1 letter files that end with .txt
+    a?      - all 2 letter files starting with a
+    a?.txt  - all 2 letter files starting with a and ending with .txt
+[] - character class
+    - matches any of the characters included between the brackets, matches exactly one character
+    [aeiou] - 1 letter files that are a vowel
+    ca[nt]* - files that start with ca and have either n or t, followed by anything (even nothing) - ex. finds can, cat, candy or catch
+[!] - matches any of the characters NOT included between the brackets, matches exactly one character
+    - [!aeiou]* - finds files that don't start with a vowel, and end with anything else - ex. finds baseball, cricket
+[a-g] - use two chars separated by a hyphen to create a range in a character class
+    [a-g]* - finds all files that start with a, b, c, d, e, f, or g
+    [3-6]* - finds all files starting with 3, 4, 5, or 6
+There are a couple pre-named character classes:
+    [[:alpha:]], [[:alnum:]], [[:digit:]], [[:upper:]], [[:lower:]], [[:space:]]
+\ - escape character
+    ex. *\? - find all files ending with a question mark
+
+Standard Input - stdin - 0
+Standard Output - stdout - 1
+Standard Error - stderr - 2
+
+> - redirects output by overwriting
+>> - redirects output by appending
+< - redirects input from a file to a command
+
+& - used with redirection to signal a file descriptor is being used
+2>&1 - combines and stderror and stdout
+2>file - redirect stderr to file
+>/dev/null - redirect output to nowhere
+
+ex. ls here not-here 1>out 2>out.err    - will get stdout and put it in out, will get stderr and put it in out.err
+ex. ls here not-here 2>/dev/null        - will send stderr to null (will not print)
+ex. ls here not-here > out.both 2>&1    - will send both stdout and stderr to out.both
+
+$ diff - compare two files
+    Format: #Line-Action-#Line
+        Action = (A)dd (C)hange (D)elete
+    ex. 3c3 - means there is a change at line 3
+    < from file 1
+    > from file 2
+    | differing lines
+$ sdiff - side-by-side comparison
+
+$ grep - display lines matching a pattern
+    -i - perform a search, ignoring case
+    -c - count # of occurrences in a file
+    -n - precede output with line numbers
+    -V - invert match. print lines that don't match
+
+ex. grep Hello file.txt - finds instances of "Hello" in file.txt
+ex. grep -i Hello file.txt - finds instances of "Hello" non-case-sensitive
+ex. grep -ci Hello file.txt - finds # of instances of "Hello" non-case-sensitive
+
+| - pipe symbol, takes stdout from one command and redirects it to stdin for another command
+$ cut - cut out selected portions of file
+    -d - use delimiter as field separater
+    -f - show Nth field
+$ strings - gets strings from stdin
+
+$ scp source destination - copy source to destination
+$ sftp host - start secure file transfer session with host

@@ -1,0 +1,81 @@
+What is a router?
+-----------------
+Router - enables machines on a network to communicate with each other as well as other networks
+    - LAN ports - allow your machines to connect to the same LAN
+    - Internet uplink port - sometimes labelled WAN, gives you access to a wider network
+Whenever we do any sort of networking activity, it has to go through the router
+Router decides where our network packets go and which ones come in, routes packets btwn multiple networks to get from source to destination
+
+When we use route packets, they use address "routes" to get from A to B. When we don't have a route set, we have a default route our packets will use.
+    These routes are set on a routing table that our system uses to navigate across networks
+
+Hops - roughly how we measure the distance a packet must travel to get from the source to the destination. 
+    - A hop is an intermediate device like routers that we must pass through
+    - ex. Two routers connecting host A to host B, there may be two hops between the two
+
+Switching - receiving, processing, and forwarding data to the destination service
+Routing - process of creating the routing table, so we can do switching better
+Flooding - used before routing, if a router doesn't know which way to send a packet then every incoming packet is sent to every outgoing link
+    except for the one it arrive on
+
+Routing Table
+-------------
+You can view your machine's routing table with the following command:
+$ sudo route -n
+
+Destination - says "if my packet tries to go to this network, it would use eth0"
+Gateway - if we are sending a packet that is not on the same network, it will be sent to this address, gateway to another network
+Genmask - subnet mask, used to digure out what IP address match what destination
+Flags
+    - UG - network is Up and is a Gateway
+    - U - network is Up
+Iface - interface that our packet will be going out of, eth0 usually stands for the first Ethernet device on your system
+
+Path of a packet
+----------------
+How a packet travels within its local network:
+    1. Local machine will compare destination IP address to see if it's in same subnet by looking at subnet mask
+    2. When packets are sent they need to have a source MAC address, destination MAC address, source IP address, and destination IP address.
+        At this point we don't know the destination MAC address
+    3. To get to the destination host, we use ARP to broadcast a request on the local network to find the MAC address of the destination host
+    4. Packet can be successfully sent
+
+How a packet travels outside of its network:
+    1. Local machine will compare with destination IP address, since it's outside network, it doesnt not see MAC address of destination host.
+        Also can't use ARP bc ARP request is a broadcast to locally connected hosts
+    2. Since packet doesn't know address and it's not in routing table, it sends it to default gateway. Now we have a destination IP (as well
+        as our source IP and MAC). Still don't have destination MAC. Sends ARP request to get MAC of default gateway.
+    3. Router looks at packet and confirms destination MAC address, but it's not the final destination, so it looks at routing table to
+        forward the packet to anotehr IP address that can help move the packet along to its destination. Everytime the packet moves, it strips
+        the old source and destination MAC address and updates it with the new source and destination MAC addresses.
+    4. Once the packet gets forwarded to the same network, we use ARP to find the final destination MAC address.
+    5. During this process, our packet doesn't change the source or destination IP address.
+
+Routing Protocols
+-----------------
+Routing protocols make it so we don't have to manually configure routes on a routing table for every device on a network, so instead we use protocols
+These protocols help our system adapt to network changes, learn different routes, build them in routing table, and routes the packets.
+Convergence - when using routing protocols, routers communicate with each other to college collect and exchange info about the network
+    When they agree how a network should look, every routing table maps out the complete topology of the network, thus "converging"
+
+Two primary routing protocol types:
+    - Distance Vectory protocols:
+        - Determine the path of other networks using the hop count a packet takes across the network
+        - Great for small networks, but for large networks it takes longer for routers to converge  bc it periodically sends the entire routing table
+            to every other router. Another downside is efficiency, it chooses routes that are closer in hops, but it may not always be the most
+            efficient route to take.
+        - Common protocol is RIP (Routing Information Protocol) - broadscasts the routing table to every router in the network every 30 sec
+    - Link State protocols: 
+        - More complex than distance vector, can converge quickly. Instead of periodicially sending out whole routing table, they only send updates
+            to neighboring routes. Uses different algorithm to calculate shortest path first and constructs topology in form of graph to show
+            which routers are connected to other routers.
+        - Common protocol is OSPF (Open Shortest Path First)) - only updates routing tables if there was a network change
+
+Border Gateway Protocol
+-----------------------
+BGP (Border Gateway Protocol) - used to collect and exchange routing info among autonomous systems
+Instead of routing inside autonomous systems (companies, schools, ISPs), BGP routes between them
+
+ex. Sending an email from Starbucks:
+    Send an email and packet travels through Starbucks' networks and routing tables until reaches a border at the Starbucks network at which point
+        it passes it to a Border Gateway router. This route contains the info for my packet to leave the Starbucks network and traverse other networks

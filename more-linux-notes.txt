@@ -1,0 +1,51 @@
+More Linux Notes
+
+/ - means the root directory, so we use relative pathing to refer to something relative to where we are, hence, no slash (cd /Users/dmerino/Desktop vs cd Desktop)
+./ - the directory you are currently in
+../ - parent directory
+~/ - home directory
+-/ - previous directory
+
+ls -t - sort by modification time, newest first
+file - tells you what kind of file something is
+mv - lets you move files but also rename them
+whatis - lets you see what commands do
+
+> - stdout redirector
+>> - stdout redirector with appending (will not overwrite)
+< - stdin redirector
+2> - stderr riderctor
+&> - redirects both stdout and stderr
+
+| - pipe operator - gets stdout of a command and makes that stdin to another process
+
+env - stores environment variables
+PATH variable - list of paths separated by a colon that your system searches when it runs a command
+
+head - shows first 10 lines in a file
+tail - shows last 10 lines, use -f to follow file as it grows
+
+expand - changes tabs to spaces
+unexpand - changes spaces back to tabs
+join - joins files together
+split - splits files apart
+sort - sorts lines
+tr - allows you to translate a set of chars into another set of chars
+uniq - removes duplicates from a file
+wc - shows word count of a file
+nl - number of lines
+grep - allows you to search for characters that match a certain pattern, use -i to be case insensitive
+
+/etc/passwd - stores UID and info
+/etc/shadow - stores info about user auth
+/etc/group - allows for different groups with different permissions
+
+chmod - modify permissions
+chown - change owner
+umask - changes default set of permissions (takes away rather than adds)
+SUID - set user ID - file permission that allows users to bypass root request (ex. sudo chmod 4755 myfile - note 4)
+SGID - set group ID - file permission that wllos a program to run as if it was a member of that group (ex. sudo chmod 2555 myfile - note 2)
+Effective UID - used to grant access rights to a process
+Real UID - ID of the user that launched the process
+Saved UID - allows a process to switch between the effective UID and real UID - allows for special privileges at specific times
+Sticky bit - only owner or root can delete/modify the file (ex. sudo chmod 1755 mydir - note 1)

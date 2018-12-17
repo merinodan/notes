@@ -1,0 +1,46 @@
+/dev is where device files/drivers are stored
+
+When you ls -l in /dev, you will see the following first bits on each line
+c - Character device - transfer data one character at a time (pseudo-devices such as /dev/null)
+b - Block device - transfer data in large fixed-size blocks (hardrives, filesystems, etc)
+p - Pipe device - allow two or more processes to communicate with each other, output sent to another process
+s - Socket device - facilitate communication between processes, output sent to many processes at once
+
+Major device number - represents the device driver being used
+Minor device number - tells the kernel which unique device it is in the class
+
+SCSI Devices - Small Computer System Interface - pronounced ("scuzzy") protocol that allows for comm. btwn disks, printers, scanners, and other peripherals
+    - the prefix sd often represents hard disk drives (SCSI disk)
+        - /dev/sda - first hard disk
+        - /dev/sdb - second hard disk
+        - /dev/sda3 - third partition on first hard disk
+
+Pseudo Devices - aren't physically connected to system, often character devices
+    - /dev/zero - accepts and discards all input, produces a continuous stream of NULL bytes
+    - /dev/null - accepts and discards all input, produces no output
+    - /dev/random - produces random numbers
+
+PATA Devices - sometimes in older systems hard drives will have the hd prefix
+    - /dev/hda - first hard disk
+    - /dev/hdd2 - second partition on the fourth hard disk
+
+/dev - allows other programs to access devices themselves
+/sys - used to view information and manage devices
+    - /sys contains all the info for all devices on your system, such as manufacturer and model, where it is plugged in, state, hierarchy, and 
+sysfs - virtual filiesystem mounted to the /sys directory
+
+You can rm a device file in the /dev directory to remove it
+udev dynamically creates and removes device files for us depending on whtether or not they are connected
+    - The rules for udev will be stored in /etc/udev/rules.data
+udevadm - command to view the udev database and sysfs
+
+lsusb - list usb devices
+lspci - list pci devices
+lsscsi - list scsi devices
+
+dd - reads input from a file or data stream and writes it to a file or data stream
+    - ex. dd if=/home/pete/backup.img of=/dev/sdb bs=1024
+        - if=file - input file, read from a file instead of stdin
+        - of=file - output file, write to a file instead of stdout
+        - bs=bytes - block size
+    - can be very powerful for making backups

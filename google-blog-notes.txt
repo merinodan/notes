@@ -1,0 +1,25 @@
+SRE fundamentals: SLIs, SLAs, and SLOs
+--------------------------------------
+Link: https://cloud.google.com/blog/products/gcp/sre-fundamentals-slis-slas-and-slos
+
+1. Service-Level Objective (SLO)
+    - A prerequisite to success is availability, a system that is unavailable cannot perform and will fail by default
+    - In addition to being used as a reporting tool, historical availability can also describe the probability your system will
+        perform as expected in the future
+    - Service-Level Oebjective - numerical target for system availability
+        - Anything we do (design or architectural wise) should be framed in terms of continuing to meet this SLO
+    - The lowest level of reliability you can get away with for each service should be your SLO
+    - Every service should have an availability SLO, this lets you decide whether your servie needs to be more reliable
+        (increasing cost and slowing development) or less reliable (allowing greater velocity of development)
+    - Excessive availability is a problem. Don't make your system overly reliable if you don't intend to commit to it being that reliable
+        - Examples to handle this: periodic downtime/planned-downtime
+            - This can help discover services that are using those servers inappropriately! Allowing you to move workloads somewhere else
+2. Service-Level Agreements (SLA)
+    - An SLA is a promise to someone using your service that its availability SLO should meet a certain level over a certain period
+        and if it fails to do so then some kind of penalty will be paid
+    - The availability SLO in the SLA is normally a looser objective than the internal availability SLO
+        - Ex. (99.9% availability SLO with internal availability SLO of 99.95%)
+3. Service-Level Indicator (SLI)
+    - SLI is the frequency of successful probes of our system
+    - If you want to know how reliable your service is, you must be able to measure the rates of successful and unsuccessful queries as your SLIs
+    

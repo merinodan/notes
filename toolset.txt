@@ -1,0 +1,19 @@
+Toolset
+
+Containers + VM
+Vagrant - managing development environments (good for developing on)
+Docker - managing application environments (good for micro services)
+
+Languages
+Golang - very fast, robust, less community support, harder, statically typed
+Python - quick scripting, more community support, dynamically typed
+
+Config management
+SaltStack - configuration management - takes state of system and compares it with real/working system, makes it so your apps can work on a desired machine
+
+Continuous Integration + Continuous Deployment (CI/CD)
+Jenkins - can build, test, and deploy software
+
+Other stuff
+Kubernetes - orchestration
+Nginx - dynamic proxies

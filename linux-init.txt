@@ -1,0 +1,87 @@
+System V ("System Five")
+--------
+Starts up and stops processes sequentially, using scripts that we can write or are already built-in
+A pro of this is that it's relatively easy to solve dependencies, since you know foo-a comes before foo-b
+A con of this is that performance isn't the best since it's starting and stopping one thing at a time
+
+State of the machine defined by runlevels from 0 to 6
+    - 0: Shutdown
+    - 1: Single User Mode
+    - 2: Multiuser mode without networking
+    - 3: Multiuser mode with networking
+    - 4: Unused
+    - 5: Multiuser mode with networking and GUI
+    - 6: Reboot
+
+When the system starts up, it looks to see what runlevel you're in and executes scripts inside that runlevel config
+    These scripts are located in /etc/rc.d/rc[runlevel number].d/ or /etc/init.d
+    Scripts that start with S(start) or K(kill) will run on startup and shutdown respectively
+
+Commands:
+- service --status-all (list services)
+- sudo service networking start (start a service)
+- sudo service networking stop (stop a service)
+- sudo service networking restart (restart a service)
+
+Upstart
+-------
+Uses an event and job driven model
+Job configs include info about how to start jobs and when to start jobs
+
+Upstart process:
+    - First Upstart loads up the job configs from /etc/init
+    - Once a startup event occurs, it will run jobs triggered by that event
+    - These jobs will make new events and then those events will trigger more jobs
+    - Upstart continues to do this until it completes all the necessary jobs
+
+Commands:
+- initctl list (view jobs)
+- initctl status networking (view specific job)
+- sudo initctl start networking (manually start a job)
+- sudo initctl stop networking (manually stop a job)
+- sudo initctl restart networking (manually restart a job)
+- sudo initctl emit some_event (manually emit an event)
+
+Systemd
+-------
+Slowly becoming the standard for init
+Uses goals to get system up and running
+    You have a target you want to achieve and this target also has dependencies that we need to achieve
+Extremely flexible and robust, does not follow a strict sequence to get processes started
+
+Systemd process:
+    - First, systemd loads its config files, usually located in /etc/systemd/system or /usr/lib/systemd/system
+    - Then it determines its boot goal, which is usually default.target
+    - Systemd figures out the dependencies of the boot target and activates them
+
+Similar to runlevels, systemd boots into different targets
+    - poweroff.target - shutdown system
+    - rescue.target - single user mode
+    - multi-user.target - multiuser with networking
+    - graphical.target - multiuser with networking and GUI
+    - reboot.target - restart
+
+Default boot goal of default.target usually points to the graphical.target
+Main object that systemd works with are known as units
+    Systemd doesn't just stop and start services, it can mount filesystems, monitor networking sockets, etc
+    Because of the robustness it has different types of units it operates
+        - Service units - services we've been starting and stopping, end in .service
+        - Mount units - mount filesystems, end in .mount
+        - Target units - group together other units, end in .target
+
+Commands:
+- systemctl list-units (list units)
+- systemctl status networking.service (view status of unit)
+- sudo systemctl start networking.service (start a service)
+- sudo systemctl stop networking.service (stop a service)
+- sudo systemctl restart networking.service (restart a service)
+- sudo systemctl enable networking.service (enable a unit)
+- sudo systemctl disable networking.service (disable a unit)
+
+Power States
+------------
+Here are some various other commands to modify power states:
+- sudo shutdown -h now (will halt system/power it off), you must also specify a time
+- sudo shutdown -h +2 (system will shutdown in two minutes)
+- sudo shutdown -r now (will restart system), alternatively
+- sudo reboot

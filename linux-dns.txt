@@ -1,0 +1,55 @@
+What is DNS?
+------------
+Without DNS, instead of typing google.com, we'd have to type http://192.78.12.4
+Low level networking only understands raw IP addresses to identify a host
+DNS is fundamentally a distributed database of hostnames to IP addresses
+
+DNS Components
+--------------
+Name Server - loads up DNS settings and configs and answers any questions from clients or other servers such as "Who is X?"
+    - If the name server doesn not know, it will redirect the request to other name servers
+    - Can be authoritative, meaning they hold the actual DNS records, or recursive, meaning they would ask other servers and those servers would
+        ask other servers until they find an authoritative server that contained the DNS records (can also be cached)
+Zone File - inside the name server, how the name server stores info about the domain or how to get to the domain if it doesn't know
+Resource Records - inside of zone files, each line is a record that contains info about hosts, nameservers, other resources, etc.
+    - Record name
+    - TTL - time after which we discard the record and obtain a new one, we do this bc a host can change IP addresses possibly every hour
+    - Class - namespace of the record information, most commonly IN is used for Internet
+    - Type - type of info stored in the record data (i.e. A for address, MX for Mail Exchanger, etc.)
+    - Data -can contain an IP address if it's an A record or something else depending on the record type
+
+DNS Process
+-----------
+ex. Finding danmer.info
+
+Local DNS Server - host asks "Where is danmer.info", and since our local DNS server doesn't know it goes to ask the Root Servers
+
+Root Server - 13 root servers for the Internet, distributed around the world to handle DNS requests for the Internet
+    - Controlled by different organizations and contain info about Top-Level Domains (TLD) such as .org, .com, .net, etc.
+    - Root server doesn't know where it is, so it has us ask the .info Top-Level Domain DNS Server at an IP address given to us
+
+Top-Level Domain - we send request to .info TLD and ask if it knows where danmer.info is
+    - TLD doesn't have danmer.info in their zone files, but it does see a record for danmer.info, so it gives us IP of the name server
+
+Authoritative DNS Server - we send final request to DNS server that actually has record we want
+    - Name server sees that it has a zone file for danmer.info and there is a resource for www for the host, it then gives us that IP
+        address and we can go to to the website
+
+/etc/hosts
+----------
+Before our machine actually hits DNS to do a query, it first looks locally
+
+/etc/hosts contains mappings of some hostnames to IP addresses
+Hosts first look locally for IP address mappings
+
+DNS Setup
+---------
+Popular DNS servers to use with Linux:
+    - BIND - most popular DNS server on the Internet
+    - DNSmasq - lightweight and much easier to configure than BIND
+    - PowerDNS - full-featured and similar to BIND, offers a bit more flexibility
+
+DNS Tools
+---------
+nslookup - "name server lookup" used to query name servers to find info about resource records
+dig - "domain information groper" used for getting info about DNS name servers, more flexible than nslookup and good for troubleshooting
