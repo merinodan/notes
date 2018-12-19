@@ -1,0 +1,16 @@
+Unsurprisingly, the production environment at Google is very layered and dense.
+
+Principles:
+-----------
+Embracing Risk:
+    SRE seeks to balance the risk of unavailability with the goals of rapid innovation and efficient server operations, so that
+        users' overall happiness - with features, service, and performance - is optimized.
+    Costliness has two dimensions: the cost of redundant machine/comptue resources, and the opportunity cost
+    At Google, instead of measuring by 'uptime', they measure by request success rate
+    It is important to decide whether you need a different SLO for customers and your team
+        Consumer services vs Infastructure services
+    You can decide to have planned downtime to help maintain the servers
+    "Hope is not a strategy"
+    An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between
+        innovation and reliability
+    

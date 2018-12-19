@@ -164,3 +164,111 @@ $ strings - gets strings from stdin
 
 $ scp source destination - copy source to destination
 $ sftp host - start secure file transfer session with host
+$ ftp host - non-secure file transfer protocol, login credentials sent in plaintext
+GUI versions of these include Cyberduck and FileZilla
+
+You can create aliases using the following
+$ alias cls='clear'
+To remove an alias use:
+$ unalias cls
+Persist aliases in dot files
+
+$ printenv - view all env variables
+$ export VAR="value" - creates env variables
+$ unset VAR - remove env variables
+To persist env vars, add it to ~/.bash_profile
+
+$ ps - list processes
+    -e - everything, all processes
+    -f - full format listing
+    -u username - display username's processes
+    -p pid - display info for PID
+$ top - interactive process viewer
+command & - starts command in background
+ctrl-z - suspend a process
+$ bg [%num] - background a suspended process
+$ fg [%num] - foreground a background process
+$ kill - kill a process by job number or PID
+    -l - display list of signals
+    kill [-sig] pid - send a signal to a process
+$ jobs [%num] - list jobs
+    + - indicates the current job, can also be represented by %% or %+
+    - - indicates the last job, can also be represented by %-
+
+cron - time based job scheduling service
+$ crontab - program to create, read, update, and delete your job 
+    file - install new crontab from file
+    -l - list cron jobs
+    -e - edit cron jobs
+    -r - remove all cron jobs
+Format:
+* * * * *   /bin/test-program
+| | | | |
+| | | | +-- Day of the week     (0-6)
+| | | +---- Month of the year   (1-12)
+| | +------ Day of the month    (1-31)
+| +-------- Hour                (0-23)
++---------- Minutes             (0-59)
+ex. 0 7 * * 1 /bin/test-program - runs at 7 AM on Mondays, on any day of the month of any month
+You can redirect output using the redirector
+    ex. 0 2 * * * /root/backupdb > /tmp/db.log 2>&1
+ex. 0,30 * * * * /bin/test-program - runs every 30 minutes
+ex. 0-4 * * * * /bin/test-program - run for first five minutes of the hour
+There are a couple crontab shortcuts: @yearly, @annually, @monthly, @weekly, @midnight/@daily, @hourly
+
+$ su [username] - change user ID or become superuser (if no params)
+    - hyphen used to provide an environment similar to what the user would expect had the user logged in directly
+        ex. $ su - dmerino
+    -c command - specify a command to be used
+$ whoami - displays user account name
+$ sudo - super user do
+    -l - list available commands
+    command - run command as root
+    ex. $ sudo -u user command - run as user
+    -s - start a shell
+$ visudo - edit the /etc/sudoers file
+    Format:
+        user host=(users) [NOPASSWD:] commands
+
+Every command you execute is added to the shell history, which can be displayed and recalled
+It is stored in various possible places: ~/bash_history, ~/.history, ~/.histfile
+$ history - displays shell history
+    $HISTSIZE - controls # of commands to retain in history
+$ !N - repeat command line number N
+$ !! - repeat previous command line
+$ !string - repeat most recent command starting with "string"
+$ !:N - <Event> <Separator> <Word> - lets you grab certain arguments from a command
+    ex. cat /home/dmerino/myfile.txt ./testfile.txt ./otherfile \
+        nano !:2 - will open up testfile.txt in nano
+$ !^ - represents first argument    (== !:1)
+$ !$ - represents last argument     (== !:N)
+Ctrl-r - reverse shell history search
+    Enter - execute command
+    Arrows - change command
+    Ctrl-g - cancel search
+
+Packages - collection of files that make up an application
+    Includes data/metadata that has package description, version, dependencies, etc.
+Package manager - installs, upgrades, and removes packages, manages dependencies, and keeps track of what is installed
+RPM (Red Hat Package Manager) package format distros: Red Hat, CentOS, Fedora, Oracle Linux, Scientific Linux
+    $ yum - command line util for RPM package distros
+        info [package] - displays info about package
+        install [-y] package - install package
+        remove package - remove package
+    $ rpm -qa - list all installed packages
+        -qf /path/to/file - list files package
+        -ql package - list package's files
+        -ivh package.rpm - install package
+        -e package - erase (uninstall) package
+You must have sudo permissions to use yum or apt-get
+DEB distros have a different package manager, APT, this is on distros such as: Debian, Linux Minut, and Ubuntu
+    APT - Advanced Packaging Tool
+        $ apt-cache search string - serach for string
+        $ apt-get install [-y] package - install package
+        $ apt-get remove package - remove package, leaving configuration
+        $ apt-get purge package - remove package, deleting configuration
+        $ apt-cache show package - display info about package
+    $ dpkg -l - list intalled packages
+        -S /path/to/file - list file's package
+        -L - list all files in package
+        -i package.deb - install package

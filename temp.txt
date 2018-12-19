@@ -18,3 +18,5 @@ Jupyter:
         - May look better on my profile
     Cons:
         - In Python (harder to pickup)
+
+Make a script that goes into vagrantbox, copies files, and pushes changes to Git
