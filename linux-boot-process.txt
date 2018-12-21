@@ -1,0 +1,53 @@
+4 stages:
+1. BIOS - initializes hardware and makes sure with a Power-on Self Test (POST) that all the hardware is good to go. Load up bootlader
+2. Bootloader - loads kernel into memory and then starts kernel with set of kernel parameters
+3. Kernel - immediately initializes devices and memory. Load up init process
+4. Init - starts and stops essential service processes on the system
+
+BIOS
+----
+- Performs system integrity checks
+- Main goal is to find the system bootloader
+- Once BIOS boots up the hard drive, BIOS searches boot block to figure out how to boot up the system
+- Will look to MBR first, since it is in the first sector of the hard drive - this contains the code to load another program, which loads up bootloader
+
+However, if you partitioned your disk GPT, the location is a bit different
+UEFI - Unified Extensible Firmware Interface
+    - Designed to be the successor to BIOS
+    - Intended for use with the GPT format
+    - Many improvements
+
+BOOTLOADER
+----------
+Main responsibilities:
+- Booting into an OS
+- Selecting a kernel to use
+- Specifying kernel parameters
+
+Most common bootloader for Linux is GRUB
+To find the kernel, it will look at kernel parameters
+    - initrd - specifies location of initial RAM disk
+    - BOOT_IMAGE - where kernel image is located
+    - root - location of root filesystem, kernel searches inside this location to find init
+    - ro - mounts filesystem as read-only mode
+    - quiet - added so you don't see display  messages that are going on in the background during boot
+    - splash - shows splash screen
+
+KERNEL
+------
+Temporary root filesystem contains essential modules the kernel needs to get to the rest of the hardware
+initramfs - temporary root FS that is built into kernel itself to load all necessary drivers for the real root FS
+Once kernel has all the modules it needs and has mounted the root partition, the kernel locates the init program and executes it
+
+INIT
+----
+3 major implementations of init in Linux:
+    - System V init (sysv)
+        - Traditional init system. Sequentially starts and stops processes, based on startup scripts
+        - State of machine denoted by runlevels, each runlevel starts or stops a mchine in a different way
+    - Upstart
+        - You'll find this one in older Ubuntu installations
+        - Uses idea of jobs and events and works by starting jobs that perform certain actions in response to events
+    - Systemd
+        - New standard for init, goal oriented
+        - Have a goal that you want to achieve and systemd tries to satisfy the goal's dependencies to complete the goal

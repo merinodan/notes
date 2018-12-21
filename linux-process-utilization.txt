@@ -1,0 +1,115 @@
+Tracking processes: top
+-----------------------
+$ top - getes a real-time view of the system utilization by our processes
+
+1st line shows: current time, how long system has been running, how many users are currently logged on, and system load avg
+2nd line shows: tasks that are running, sleeping, stopped, and zombied
+3rd line shows: cpu information
+    - us: user CPU time - % of cpu time spent running users' processes that aren't niced
+    - sy: system CPU time - % of CPU time spent running the kernel and kernel processes
+    - ni: nice CPU time - % of CPU time spent running niced processes
+    - id: CPU idle time - % of CPU time spent idle
+    - wa: I/O wait - % of CPU time spent waiting for I/O
+    - hi: hardware interrupts - % of CPU time spent service hardware interrupts
+    - si: software interrupts - % of CPU time spent serving software interrupts
+    - st: steal time - if you are running VMs, this is the % of CPU time that was stolen from you for other tasks
+4th and 5th line shows: memory usage and swap usage
+Processes List:
+    - PID: ID of the process
+    - USER: user that is the owner of the process
+    - PR: priority of process
+    - NI: nice value
+    - VIRT: virtual memory used by process
+    - RES: physical memory used from process
+    - SHR: shared memory of the process
+    - S: indicates status of process: S=sleep, R=running, Z=zombie, D=uninterruptible, T=stopped
+    - %CPU: % of CPU used by this process
+    - %MEM: % of RAM used by this process
+    - TIME+: total time of activity in this process
+    - COMMAND: name of the process
+
+You can use the following command to just track certain processes
+$ top -p 1
+
+lsof and fuser
+--------------
+$ lsof - short for list open files, sees what files are in use by a process and their associated process
+$ fuser - short for file user, shows info about the process that is using the file or the file user
+
+Process Threads
+---------------
+All processes must have at least one thread
+Processes can operate with their own isolated system resources, however threads can share these resources among each other easily
+This makes it easier for them to communicate and can help efficiency as well
+$ ps m - view process threads
+
+CPU Monitoring
+--------------
+$ uptime - shows uptime info about the system
+    load average shows CPU load in 1, 5, and 15 minute intervals
+    CPU load - avg number of processes that are waiting to be executed by the CPU
+
+I/O Monitoring
+--------------
+$ iostat - monitors CPU and disk usage
+First part shows CPU information:
+    - %user - shows % of CPU utilization that occurred while executing at the user level (application)
+    - %nice - shows % of CPU utilization that occurred while executing at user level with nice priority
+    - %system - shows % of cPU utilizaiton that occurred wihle executing at the system level (kernel)
+    - %iowait - shows % of time that CPU or CPUs were idle during which system had an outstanding disk I/O request
+    - %steal - shows % of time spent in involuntary wait by virtual CPU or CPUs while hypervisor was servicing another processor
+    - %idle - shows % of time that CPU or CPUs wer eidle and system did not have an outstanding disk I/O request
+Second part shows disk utilization:
+    - tps - indicate # of transfers/second that were issued to the device
+        Transfer is an I/O request to the device. Multiple logical requests can be combined into a single I/O request to the device
+    - kB_read/s - amount of data read from device expressed in kilobytes per second
+    - kB_wrtn/s - amount of data written to the device expressed in kilobytes per second
+    - kB_read - total # of kilobytes read
+    - kB_wrtn - total # of kilobytes written
+
+Memory Monitoring
+-----------------
+$ vmstat - monitors memory usage
+procs
+    r - # of processes for run time
+    b - # of processes in uninterruptible sleep
+memory
+    swpd - amount of virtual memory used
+    free - amount of free memory
+    buff - amount of memory used as buffers
+    cache - amount of memory used as cache
+swap
+    si - amount of memory swapped in from disk
+    so - amount of memory swapped out to disk
+io
+    bi - amount of blocks received in from a block device
+    bo - amount of blocks sent out to a block device
+system
+    in - # of interrupts per second
+    cs - # of context switches per second
+cpu
+    us - time spent in user time
+    sy - time spen tin kernel time
+    id - time spent idle
+    wa - time spent waiting fo IO
+
+Continuous Monitoring
+---------------------
+Continuous monitoring tool - will collect, report, and save system activity info, even when you aren't actively monitoring it
+sar - tool used to do historical analysis on system (install using sudo apt install sysstat)
+
+$ sudo sar -q (list details from start of day)
+$ sudo sar -r (list details of memory usage from start of the day)
+$ sudo sar -P (list details of CPU usage)
+
+You can also view the logs in /var/log/sysstat/saXX where XX is the day you want to view
+
+Cron Jobs
+---------
+cron - time based job scheduler
+
+ex. I have a script I want to run at 8:30 a.m. everyday to change my wallpaper
+30 08 * * * /home/dmerino/scripts/change_wallpaper
+
+Field from left to right: minute, hour, day, month, day of the week
+$ crontab -e (edits the cronjob file)

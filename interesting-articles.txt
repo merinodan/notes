@@ -1,0 +1,17 @@
+Interesting articles, post-mortems, and take-aways:
+
+Article: The Road to uChat: Building Uber’s Internal Chat Solution
+Date: December 12, 2018
+Date released: July 25, 2017
+Link: https://eng.uber.com/uchat/
+Thoughts: Very interesting to see how Uber built their own solution and scaled appropriately. Offers insight about internal solutions
+    and how Go is becoming a language of the future. Shows why to not use monolothic repos and shows how they had a repo for Puppet
+    (infra) changes as well as a repo for application changes.
+
+Holy Grail: The Twelve-Factor App
+Date: December 14, 2018
+Date released: 2017
+Link: https://12factor.net/
+Thoughts: Bible for buildilng a modern application. Twelve factors: codebase, dependencies, config, backing services,
+    build (release & run), processes, port binding, concurrency, disposability, dev/prod parity, logs, admin processes. These things
+    combined can help build modern, scalable, reliable, programs.

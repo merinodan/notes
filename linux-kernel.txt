@@ -1,0 +1,44 @@
+The kernel is the core of the OS
+There are 3 different levels of abstraction in the Linux OS
+    - Hardware - includes CPU, memory, hard disks, networking ports, etc. - actually computes what our machine is doing
+    - Kernel - handles process and memory management, device comm., system calls, sets up FS, etc. - talks to hardware to
+                make sure it does what we want our processes to do
+    - User space - includes shell, programs that you run, graphics, etc.
+
+Privilege Levels
+----------------
+Kernel mode - kernel has complete access to hardware, controls everything
+User mode - very small amount of safe memory and CPU that you are allowed to access
+
+Abstraction is used to make the system more secure
+
+System Calls
+------------
+System calls (syscalls) provide user space processes a way to request the kernel to do something for us
+Kernel makes certain services available through syscall APIs, allowing us to read, write to a file, modify memory usage, network, etc.
+The amount of services are fixed, so you can't add syscalls. These are stored in a table each with a unique ID
+
+Kernel Installation
+-------------------
+You can have multiple kernels on your system and from a GRUB menu you can choose a kernel to boot to
+You can install kernels using package management tools (like apt)
+
+Kernel Location
+---------------
+When you install a new kernel, it adds a couple of files to the system, usually in the /boot directory
+Some files you might see:
+    - vmlinuz - actual linux Kernel
+    - initrd - temporary file system used before loading the kernel
+    - System.map - symbolic lookup table
+    - config - kernel config settings
+
+Kernel Modules
+--------------
+Modules - pieces of code that can be loaded and unloaded into the kernel on demand, allow us to extend the functionality without actually
+            adding to the core kernel code
+lsmod - list currently loaded modules
+modprobe - tries to load the module from /lib/modules/(kernel version)/kernel/drivers
+    - ex. sudo modprobe bluetooth
+    - Remove a module with -r
+You can load modules during system boot by modifying the /etc/modprobe.d directory and adding a config file in it
+Similarly, you can also make sure modules to not load on bootup by blacklisting it

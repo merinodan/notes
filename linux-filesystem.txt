@@ -1,0 +1,139 @@
+Filesystem Hierarchy
+--------------------
+/ - root directory of entire filesystem hierarchy
+/bin - essential ready-to-run programs (binaries), includes most basic commands such as ls and cp
+/boot - contains kernel boot loader files
+/dev - device files
+/etc - core system config directory, should hold only config files and not binaries
+/home - personal directories for users
+/lib - holds library files that binaries can use
+/media - used as an attachment point for removable media like USB drives
+/mnt - temporarily mounted filesystems
+/opt - optional apoplicaiton software packages
+/proc - info about currently running processes
+/root - root user's home directory
+/run - info about the running system since last boot/sbin - contains essential system binaries, usually can only be ran by root
+/srv - site-specific data which are served by the system
+/tmp - storage for temporary files
+/usr - user installed software and utilities
+/var - variable directory, used for system logging, user tracking, caches, etc. - anything subject to change
+
+Filesystem types
+----------------
+There are many different filesystem implementations available, some faster, some larger, etc.
+The Virtual File System (VFS) abstraction layer is an abstraction layer btwn apps and different filesystem types, so no matter what filesystem you have
+    your apps wills be able to work with it
+Journaling - say you are copying a large file and all of a sudden you lose power
+    - Non-journaled - file would be corrupted and file system incosistent. Repairs can take a long time
+    - Journaled - System will write what it's doing in a log file (journal). When copying completes, journal marks task as complete.
+    - Journaling decreases boot time bc instead of checking the entire filesystem it just looks at the journal
+
+Common Desktop filesystems
+    - ext4 - most current version of the native Linux filesystem - can support very large files and disk volumes - standard choice
+    - Btrfs - new filesystem for Linux, comes with snapshots, incremental backups, performance increase, and more - not as stable
+    - XFS - high performance journaling FS - great for system with large files such as media server
+    - NTFS and FAT - Windows filesystems
+    - HFS+ - MacOS filesystem
+
+df - reports FS disk space usage and other details about the disk
+
+Anatomy of a Disk
+-----------------
+Partitions are useful for separating data and if you need a filesystem, you can easily create a partition instead of making the entire disk one filesystem type
+Partition table - on every disk, tells the system how the disk is partitioned.
+    - Two main partition schemes used: Master Boot Record (MBR) and GUID Partition Table (GPT)
+
+MBR
+- Traditional partition table, was used as the standard
+- Can have primary, extended, and logical partitions
+- Limit of four primary partitions
+- Additional partitions can be made by making a primary partition into an extended partition (only one per disk)
+    - Inside an extended partition you add logical partitions
+- Support disks up to 2 terabytes
+
+GPT
+- Becoming the new standard for disk partitioning
+- Has only one type of partition and you can make many of them
+- Each partition has a globally unique ID (GUID)
+- Used mostly in conjunction with UEFI based booting
+
+Structure -
+Boot block
+- Located in the first few sectors of the filesystem, not really used by the filesystem.
+- Contains info used to boot the OS
+Super block
+- Single block that comes after boot block, contains info about filesystem (inode table, size of inode table, logical blocks, and FS)
+Inode table
+- Database that manages our files
+- Each file or directory has a unique entry in the inode table and has various info about the file
+Data blocks
+- Actual data for files and directories
+
+Disk Paritioning
+----------------
+1. PARTITION
+parted - command line tool that supports both MBR and GPT partitioning
+2. CREATING THE FILESYSTEM
+mkfs - make filesystem - allows us to specify the type of FS we want and where we want it
+    - ex. sudo mkfs -t ext4 /dev/sdb2   (-t specifies the type of filesystem)
+3. MOUNTING
+Before you can view the contents of the FS, you will have to mount it
+Mount point - directory of the system where the FS is going to be attached
+    - ex. sudo mount -t ext4 /dev/sdb2 /mydrive
+To unmount you use the command umount
+    - ex. sudo umount /mydrive
+
+/etc/fstab
+----------
+When we want to automatically mount a FS at startup, we can add them to a file called /etc/fstab (eff es tab, short for filesystem table)
+This file contains a permanent list of FS that are mounted
+
+swap
+----
+The swap partition is what we use to allocate virtual memory to your system
+If you are low on memory, the system uses this partition to "swap" pieces of memory of idle processes to the disk
+
+Disk usage
+----------
+df - (disk free) shows utilization of currently mounted FS (-h gives human readable format)
+du - (disk usage) shows disk usage of current diretory you are in
+
+Filesystem repair
+-----------------
+Our FS can become corrupt overtime
+fsck - (filesystem check) - used to check the consistency of a FS and can even try to repair it for us
+Usually when you boot up a disk, fsck will run before your disk is mounted to make sure everything is ok, but sometimes we must do it manually
+
+Inodes
+------
+Inode - (index node) - an entry in a table and there is one for every file
+    - Describes everything about the file such as
+        - File type
+        - Owner
+        - Group
+        - Access permissions
+        - Timestamps
+        - Number of hardlinks to file
+        - Size of file
+        - Number of blocks allocated to file
+        - Pointers to data blocks of the file
+    - Pretty much everything but the filename and the file itself
+    - Space for inodes is allocated when a FS is created
+    - Identified by numbers, when a file gets created it is assigned an inode number which are assigned in sequential order
+        - Once inodes are deleted, they can be reused by other files, so a new file may have a lower inode number
+    - Inodes are used bc data isn't stored sequentially
+        - Inodes point to the actual blocks of data in files
+
+symlinks
+--------
+Symlinks - equivalent of shortcuts from Windows - allow us to link to another file by its filename
+There are symbolic links (soft links or symlinks) and hardlinks (link another file with a link to an inode)
+ln - (link) used for creating symlinks
+    - ex. ln -s myfile mylink   (-s is for symbolic)
+    - ex. ln somefile somelink  (hardlink creation)
+Symlinks are denoted by -> (when you ls)
+When you modify a symlink, the file also gets modifired
+Hardlinks create another file with a link to the same node
+    If you modify contents of one, the change will be seen on both
+    However, if you delete one, you can still access the contents through the other
+Link count is the number of hardlinks that an inode has

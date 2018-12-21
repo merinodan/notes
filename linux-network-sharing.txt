@@ -1,0 +1,89 @@
+File Sharing Overview
+---------------------
+There are a couple different methods to copy data to and from different machines on a network
+
+$ scp   // secure copy, allows you to copy from one host over to another host on the same network
+
+Copy a file from local host to a remote host:
+$ scp  myfile.txt username@remotehost.com:/remote/directory
+
+Copy from remote host to local host:
+$ scp username@remohost.com:/remote/directory/myfile.txt /local/directory
+
+Copies over directory: 
+$ scp -r mydir username@remotehost.com:/remote/directory 
+
+rsync
+-----
+Short for remote synchronization
+Similar to scp, but uses a special algorithm that checks in advance if there is already data that you are copying to and will only copy differences
+Verifies integrity of a file you are copying over with checksums
+
+rsync is ideal for directory synchronization remotely and locally, data backups, large data transfers, and more
+
+Common options:
+    -v - verbose output
+    -r - recursive into directories
+    -h - human readable output
+    -z - compressed for easier transfer, great for slow connections
+
+Copy/sync files on the same host:
+$ rsync -zvr /my/local/directory/one /my/local/directory/two
+
+Copy/sync files to local host from a remote host:
+$ rsync /local/directory username@remotehost.com:/remote/directory
+
+Copy/sync files to a remote host from a local host:
+$ rsync username@remotehost.com:/remote/directory /local/directory
+
+Simple HTTP Server
+------------------
+Python has a tool for creating a quick network share for other machines on your network to access
+
+$ python -m SimpeHTTPServer     // Sets up a basic webserver you can access via the localhost address
+
+NFS
+---
+Most standard network file share for Linux is NFS (Network File System)
+Allows a server to share directories and files with one or more clients over the network
+
+Setting up NFS client
+$ sudo service nfsclient start
+$ sudo mount server:/directory /mount_directory
+
+If you want to keep the NFS permanently mounted, you can use the automount tool, or more recently, the amd tool
+
+Samba
+-----
+Server Message Block (SMB) used for sharing files between Windows Operating Systems and Linux systems
+Common Internet File SYstems (CIFS) optimized protocol for SMB
+Samba - implementation of CIFS on Linux, can share files and resources
+
+Create a network with Samba:
+
+Installing Samba:
+$ sudo apt update
+$ sudo apt install samba
+
+Setup smb.conf
+The config file for Samba is found at /etc/samba/smb.conf and tells the system what dirs should be shared, the permissions, and more
+$ sudo vi /etc/samba/smb.conf
+
+Setup password for Samba
+$ sudo smbpasswd -a [username]
+
+Create a shared directory
+$ mkdir /my/directory/to/share
+
+Restart the Samba service
+$ sudo service smbd restart
+
+Accessing a Samba share via Windows
+\\HOST\sharename
+
+Accessing a Samba/Windows share via Linux
+Samba package includes a tool called smbclient you can use to access any Windows or Samba server
+$ smbclient //HOST/directory -U user
+
+Attach a Samba share to your system
+$ sudo mount -t cifs servername:directory mountpoint -i user=username,pass=password

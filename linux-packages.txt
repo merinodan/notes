@@ -1,0 +1,33 @@
+Package - lots of files that have been compiled into one
+Upstream providers send packages to package maintainers who handle getting software to users
+
+gzip - program used to compress (single) files in linux, has .gz extension
+gzip - compresses a file down
+gunzip - decompress a file
+
+tar - can add multiple files into one archive, has .tar extension
+    - ex. tar cvf mytarfile.tar myfile1 myfile2
+        - c - create
+        - v - tell the program to be verbose and let us see what it's doing
+        - f - filename of the tar file
+to extract the contents of a tar file use
+    - ex. tar xvf mytarfile.tar
+        - x - extract
+        - v - verbose
+        - f - file you want to extract
+
+If you have a file type like myfile.tar.gz, you have to uncompress with gunzip then unpack the tar file
+Alternatively, use
+    - ex. tar xzf file.tar
+
+rpm and dpkg are the package managers for Red Hat and Debian, respectively - used for direct packages
+- ex. dpkg -i some_deb_package.deb 
+    - installs some_deb_package
+- use -r to remove packages and -l to list packages
+
+apt and yum are the fully-fledged package managers for Debian and Red Hat, respectively
+- help you get dependencies, updates, and info about packages
+- apt install package_name
+- apt remove package_name
+- apt update; apt upgrade
+- apt show package_name

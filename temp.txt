@@ -1,0 +1,22 @@
+Problem:
+
+I want to have my notes shared across my work and home computers. Something I can easily do in a code editor (like VSCode)
+
+Options:
+Git: Creating basic README files in Markdown and pushing them to my Git profile (ex. https://github.com/8483/notes)
+    Pros:
+        - Practice Git
+        - May look good on my profile?
+        - Easier, in Markdown
+    Cons: 
+        - May possibly look worse on my Git profile since it looks like I'm pushing a lot more stuff than I actually am
+
+Jupyter: 
+    Pros:
+        - In Python (good for learning)
+        - Also can possibly be uploaded to Git
+        - May look better on my profile
+    Cons:
+        - In Python (harder to pickup)
+
+Make a script that goes into vagrantbox, copies files, and pushes changes to Git

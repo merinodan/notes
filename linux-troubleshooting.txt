@@ -1,0 +1,75 @@
+ICMP
+----
+ICMP (Internet Control Message Protocol) is part of the TCP/IP protocol suite, used to send updates and error messages and is very useful for 
+    debugging network issues such as a failed packet delivery
+Each ICMP message contains a type, code, and checksum field
+    - Type - type of ICMP message
+    - Code - sub-type and describes more info about the message
+    - Checksum - used to detect any issues with the integrity of the message
+
+Common ICMP types:
+    - Type 0 - Echo Reply
+    - Type 3 - Destination Unreachable
+    - Type 8 - Echo Request
+    - Type 11 - Time Exceeded
+
+When a packet can't get to a destination, a Type 3 ICMP message is generated, and within Type 3 there are 16 code values that will further describe
+    why it can't get to the destination
+
+ping
+----
+ping - used to test whether or not a packet can reach a host
+Works by sending ICMP echo requests (Type 8) packets to teh destination host and waits for an ICMP echo reply (Type 0).
+    Successful when host sends out request packet and receives a response from the target
+
+ex. ping -c 3 www.google.com    // -c limits the number of echo request packets
+
+icmp_seq - field to show sequence number of packets sent. If some numbers are missing, that means there is a connectivity error
+ttl - field used as hop counter, decrements the counter by one and once hop counter reaches 0, packet dies (we don't want it travelling forever)
+time - roundtrip time it took from you sending the echo request packet to getting an echo reply
+
+traceroute
+----------
+traceroute - used to see how packets are getting routed. Works by sending packets with increasing TTL values, starting with 1. 
+    First router gets packet, decrements TTL by one, thus dropping the packet
+    Router sends back an ICMP Time Exceeded message back to us
+    Next packet gets TTL of 2, so it makes it past first router, but when it gets to second router, TTL is 0 so it returns ICMP Time Exceeded
+
+Traceroute works this way bc as it sends and drops packets it is building a list of routers that the packets traverse until it gets to destination
+
+netstat
+-------
+You can find a list of well-known ports in the file /etc/services
+
+netstat - tool to get detailed info about your network
+    - Displays various network related info such as network connections, routing tables, info about network interfaces, and more
+
+Socket - interface that allows programs to send and receive data, address is combination of IP address and port
+Port - used to identify which application should send or receive data
+
+$ netstat -at   // a for listening and non-listening (all) and t for only tcp
+
+Columns from left to right:
+    - Proto - protocol used, TCP or UDP
+    - Recv-Q - data that is queued to be received
+    - Send-Q - data that is queued to be sent
+    - Local address - locally connected host
+    - Foreign address - remotely connected host
+    - State - state of the socket
+
+Socket states:
+    - LISTENING - socket is listening for incoming connections
+    - SYN_SENT - socket is actively attempting to establish a connection
+    - ESTABLISHED - socket has established a connection
+    - CLOSE_WAIT - remote host has shutdown and we're waiting for socket to close
+    - TIME_WAIT - socket is waiting after close to handle packets still in the network
+
+Packet Analysis
+---------------
+tcpdump - tool that allows us to analyze packets
+
+Install tcpdump
+$ sudo apt install tcpdump
+
+Capture packet data on an interface
+$ sudo tcpdump -i wlan0

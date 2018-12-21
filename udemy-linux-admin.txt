@@ -1,0 +1,331 @@
+$ which command - lets you see where a command is getting the command form
+mkdir [-p] - -p means parent, you can specify children
+
+$ ls -F - -F lets you see file type (/ for directory, @ for link, * for exe)
+    -t - list files by time
+    -r - reverse order
+    -R - list files recursively
+    -d - list directories only
+    --color - colorize the output
+
+$ ls -l output:
+    permissions, links, owner, groups, date, filename
+    
+$ tree - similar to ls -R, but creates visual output
+    -d - list directories only
+    -C - colorize output
+
+Symbolic link - link that points to actual file or directory
+    - You can use the link as if it were the actual file
+    - Can be used to create a shortcut
+
+Ctrl+U - delete current line
+
+Permissions
+- - regular file
+d - directory
+l - symbolic link
+r - read - for dirs: allows file names in a dir to be read
+w - write - for dirs: allows entries to be modified within the directory
+x - execute - for dirs: allows accces to contents and metadata for entries
+u - user
+g - group
+o - other
+a - all
+
+Groups
+    Every user is in atleast one group, and can belong to many groups
+    $ groups - displays the groups a user is in
+
+chmod - stands for change mode
+chmod g+w file.txt - adds only write to group
+chmod u+rwx,g-x file.txt - adds rwx to user, removes execute from gorup
+chmod a=r file.txt - set all to read
+
+chgrp class file.txt - changes the group
+Sometimes dir permissions can affect file permissions, in which case you should start from the bottom directory checking permissions
+    and working your way up
+
+File creation mask determines default permissions (usually set by sysadmin)
+    umask [-S] [mode] - sets file creation mask to mode, if given , use -S to for symbolic notation
+        - reverse permissions as chmod
+    When you do umask with no parameters, you get the umask currently on
+    
+$ find - recursively finds files in path that match expression
+    -name pattern - find files and dirs that match pattern
+    -iname - like name, but ignores case
+    -ls - performas an ls on each of the found items
+    -mtime days - finds files that are x days old
+    -size num - finds files that are of size num
+    -newer file - finds files that are newer than file
+    -exec command {} \; - runn command against all files that are found
+
+ex. find /bin -iname makedev    - find something called makedev
+ex. find /bin - name *v  - anything ending with v
+ex. find . -mtime + 10 -mtime -13
+
+$ locate pattern - similar to find, faster than find command, results are not in real time, queries an index
+
+$ more - browse through a text file
+$ less - more features than more
+$ tail - output bottom of file
+    -f - follow the file (displays data as it is being written to the file)
+
+$ cp - copy, when something doesn't exist it just creates it
+    -i - interactice mode (asks to make sure you want to overwrite something)
+    -r - copy recursively
+
+$ mv - move or rename files and dirs
+    -i - interactive mode
+
+$ sort - sorts text in file
+    -k F - sort by key, F is file number
+    -r - sort in reverse order
+    -u - remove non-unique results
+
+$ tar - create, extract, or list contents of a tar archive
+    -c - create tar archive
+    -x - extract files from archive
+    -t - display table of contents
+    -v - be verbose
+    -z - use compression
+    -f file - use this file
+
+$ gzip - compress files
+$ gunzip - uncompress files
+$ gzcat - cat compressed files
+
+$ du - estimates file usage
+
+WILDCARDS
+* - matches zero or more characters
+    *.txt   - finds all files ending in txt
+    a*      - finds all files beginning with a
+    a*.txt  - finds all files beginning with a and ending with .txt
+? - matches exactly one character
+    ?.txt   - all 1 letter files that end with .txt
+    a?      - all 2 letter files starting with a
+    a?.txt  - all 2 letter files starting with a and ending with .txt
+[] - character class
+    - matches any of the characters included between the brackets, matches exactly one character
+    [aeiou] - 1 letter files that are a vowel
+    ca[nt]* - files that start with ca and have either n or t, followed by anything (even nothing) - ex. finds can, cat, candy or catch
+[!] - matches any of the characters NOT included between the brackets, matches exactly one character
+    - [!aeiou]* - finds files that don't start with a vowel, and end with anything else - ex. finds baseball, cricket
+[a-g] - use two chars separated by a hyphen to create a range in a character class
+    [a-g]* - finds all files that start with a, b, c, d, e, f, or g
+    [3-6]* - finds all files starting with 3, 4, 5, or 6
+There are a couple pre-named character classes:
+    [[:alpha:]], [[:alnum:]], [[:digit:]], [[:upper:]], [[:lower:]], [[:space:]]
+\ - escape character
+    ex. *\? - find all files ending with a question mark
+
+Standard Input - stdin - 0
+Standard Output - stdout - 1
+Standard Error - stderr - 2
+
+> - redirects output by overwriting
+>> - redirects output by appending
+< - redirects input from a file to a command
+
+& - used with redirection to signal a file descriptor is being used
+2>&1 - combines and stderror and stdout
+2>file - redirect stderr to file
+>/dev/null - redirect output to nowhere
+
+ex. ls here not-here 1>out 2>out.err    - will get stdout and put it in out, will get stderr and put it in out.err
+ex. ls here not-here 2>/dev/null        - will send stderr to null (will not print)
+ex. ls here not-here > out.both 2>&1    - will send both stdout and stderr to out.both
+
+$ diff - compare two files
+    Format: #Line-Action-#Line
+        Action = (A)dd (C)hange (D)elete
+    ex. 3c3 - means there is a change at line 3
+    < from file 1
+    > from file 2
+    | differing lines
+$ sdiff - side-by-side comparison
+
+$ grep - display lines matching a pattern
+    -i - perform a search, ignoring case
+    -c - count # of occurrences in a file
+    -n - precede output with line numbers
+    -V - invert match. print lines that don't match
+
+ex. grep Hello file.txt - finds instances of "Hello" in file.txt
+ex. grep -i Hello file.txt - finds instances of "Hello" non-case-sensitive
+ex. grep -ci Hello file.txt - finds # of instances of "Hello" non-case-sensitive
+
+| - pipe symbol, takes stdout from one command and redirects it to stdin for another command
+$ cut - cut out selected portions of file
+    -d - use delimiter as field separater
+    -f - show Nth field
+$ strings - gets strings from stdin
+
+$ scp source destination - copy source to destination
+$ sftp host - start secure file transfer session with host
+$ ftp host - non-secure file transfer protocol, login credentials sent in plaintext
+GUI versions of these include Cyberduck and FileZilla
+
+You can create aliases using the following
+$ alias cls='clear'
+To remove an alias use:
+$ unalias cls
+Persist aliases in dot files
+
+$ printenv - view all env variables
+$ export VAR="value" - creates env variables
+$ unset VAR - remove env variables
+To persist env vars, add it to ~/.bash_profile
+
+$ ps - list processes
+    -e - everything, all processes
+    -f - full format listing
+    -u username - display username's processes
+    -p pid - display info for PID
+$ top - interactive process viewer
+command & - starts command in background
+ctrl-z - suspend a process
+$ bg [%num] - background a suspended process
+$ fg [%num] - foreground a background process
+$ kill - kill a process by job number or PID
+    -l - display list of signals
+    kill [-sig] pid - send a signal to a process
+$ jobs [%num] - list jobs
+    + - indicates the current job, can also be represented by %% or %+
+    - - indicates the last job, can also be represented by %-
+
+cron - time based job scheduling service
+$ crontab - program to create, read, update, and delete your job 
+    file - install new crontab from file
+    -l - list cron jobs
+    -e - edit cron jobs
+    -r - remove all cron jobs
+Format:
+* * * * *   /bin/test-program
+| | | | |
+| | | | +-- Day of the week     (0-6)
+| | | +---- Month of the year   (1-12)
+| | +------ Day of the month    (1-31)
+| +-------- Hour                (0-23)
++---------- Minutes             (0-59)
+ex. 0 7 * * 1 /bin/test-program - runs at 7 AM on Mondays, on any day of the month of any month
+You can redirect output using the redirector
+    ex. 0 2 * * * /root/backupdb > /tmp/db.log 2>&1
+ex. 0,30 * * * * /bin/test-program - runs every 30 minutes
+ex. 0-4 * * * * /bin/test-program - run for first five minutes of the hour
+There are a couple crontab shortcuts: @yearly, @annually, @monthly, @weekly, @midnight/@daily, @hourly
+
+$ su [username] - change user ID or become superuser (if no params)
+    - hyphen used to provide an environment similar to what the user would expect had the user logged in directly
+        ex. $ su - dmerino
+    -c command - specify a command to be used
+$ whoami - displays user account name
+$ sudo - super user do
+    -l - list available commands
+    command - run command as root
+    ex. $ sudo -u user command - run as user
+    -s - start a shell
+$ visudo - edit the /etc/sudoers file
+    Format:
+        user host=(users) [NOPASSWD:] commands
+
+Every command you execute is added to the shell history, which can be displayed and recalled
+It is stored in various possible places: ~/bash_history, ~/.history, ~/.histfile
+$ history - displays shell history
+    $HISTSIZE - controls # of commands to retain in history
+$ !N - repeat command line number N
+$ !! - repeat previous command line
+$ !string - repeat most recent command starting with "string"
+$ !:N - <Event> <Separator> <Word> - lets you grab certain arguments from a command
+    ex. cat /home/dmerino/myfile.txt ./testfile.txt ./otherfile \
+        nano !:2 - will open up testfile.txt in nano
+$ !^ - represents first argument    (== !:1)
+$ !$ - represents last argument     (== !:N)
+Ctrl-r - reverse shell history search
+    Enter - execute command
+    Arrows - change command
+    Ctrl-g - cancel search
+
+Packages - collection of files that make up an application
+    Includes data/metadata that has package description, version, dependencies, etc.
+Package manager - installs, upgrades, and removes packages, manages dependencies, and keeps track of what is installed
+RPM (Red Hat Package Manager) package format distros: Red Hat, CentOS, Fedora, Oracle Linux, Scientific Linux
+    $ yum - command line util for RPM package distros
+        info [package] - displays info about package
+        install [-y] package - install package
+        remove package - remove package
+    $ rpm -qa - list all installed packages
+        -qf /path/to/file - list files package
+        -ql package - list package's files
+        -ivh package.rpm - install package
+        -e package - erase (uninstall) package
+You must have sudo permissions to use yum or apt-get
+DEB packages have a different package manager, APT, this is on distros such as: Debian, Linux Minut, and Ubuntu
+    APT - Advanced Packaging Tool
+        $ apt-cache search string - serach for string
+        $ apt-get install [-y] package - install package
+        $ apt-get remove package - remove package, leaving configuration
+        $ apt-get purge package - remove package, deleting configuration
+        $ apt-cache show package - display info about package
+    $ dpkg -l - list intalled packages
+        -S /path/to/file - list file's package
+        -L - list all files in package
+        -i package.deb - install package
+
+Disks can be divided into parts, called partitions, which allow us to separate data
+    ex. 1) OS, 2) Application, 3) User, 4) Swap
+    ex. 1) OS, 2) User home directories
+    This can protect the overall system and keeps users from creating outages
+MBR - Master Boot Record 
+    Boot sector at beginning of storage device, contains info on how logical partitions are organized
+    Can only address 2 TB of disk space
+    Being phased out by GPT (GUID Partition Table)
+    Can have only 4 primary partitions
+        You can have extended partitions that allow you to create logical partitions
+GPT - GUID Partition Table, replacing the MBR partitioning scheme
+    GUID = Global Unique Identifier
+    Part of UEFI (Unified Extensible Firmware INterface)
+        UEFI is replacing BIOS
+    Supports up to 128 partitions, up to 9.4 ZB disk sizes
+    Not supported by older OS
+Mount Point - directory used to access data on a partition
+    / is always a mount point
+    /home or /export/home are also common mount points (ex. /home/dmerino)
+    You can mount over existing data
+        ex. $ mkdir /home/dan         - we make a new home folder for dan 
+            $ mount /dev/sdb2 /home   - here, we have mounted over the existing /home, so we can no longer see /home/dan
+            $ umount /home            - here, we unmount what was written over the former /home, so we can see /home/dan again
+fdisk - partitioning tool provided by Linux (alt: gdisk, parted)
+    ex. $ fdisk /path/to/device
+    -l - display list of devices
+    ex. fdisk /dev/sdb - do something with /dev/sdb
+
+ext = extended file system
+    ext2, ext3, and ext4 are the later releases and are often the default file system type
+    Other file systems include: ResiserFS, JFS, XFS, ZFS, and Btrfs
+$ mkfs -t TYPE DEVICE - create a filesystem of TYPE using DEVICE
+    ex. $ mkfs -t ext4 /dev/sdb2 - create a ext4 filesystem on /dev/sdb3
+    mkfs is really an alias for the executable to /sbin/mkfs*
+        ex. $ mkfs -t ext4 uses /sbin/mkfs.ext4
+$ mount DEVICE MOUNT_POINT - mount a device at a mount point
+    ex. $ mount /dev/sdb3 /opt
+    mount without any commands lists the current mount points (physical and virtual)
+$ df - disk free - reports file system disk space usage
+Manual mounts do not persist, you must add an entry in the /etc/fstab file
+$ umount DEVICE_OR_MOUNT_POINT - unmounts a device or mount point
+$ mkswap DEVICE - prepares a swap area
+    $ swapon - used in conjunction to "turn on" the swap space
+        -s - lists current swap spaces
+Swap space substitutes disk space for RAM memory when real RAM fills up and more space is needed
+    Infrequently used pages of memory are swapped out to the swap partition, freeing up RAM and making room for other activities
+/etc/fstab - file system table
+    Controls what devices get mounted and where on boot
+    Each entry is made up of 6 fields: device, mountpoint, filesystem type, mount options, dump, fsck order (filesystem check)
+        dump is rarely used, used for backups
+        fsck checked a boot time to check file system and what order to check them in
+    Each field is separated by tabs or spaces
+$ lsblk -f - view lables of devices
+$ blkid - view uuids of devices
+$ e2label - label a filesystem
+    ex. e2label /dev/sdb3 /opt  - labels /dev/sdb3 as /opt
