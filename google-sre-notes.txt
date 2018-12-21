@@ -1,16 +1,44 @@
 Unsurprisingly, the production environment at Google is very layered and dense.
 
 Principles:
------------
+===========
 Embracing Risk:
-    SRE seeks to balance the risk of unavailability with the goals of rapid innovation and efficient server operations, so that
-        users' overall happiness - with features, service, and performance - is optimized.
-    Costliness has two dimensions: the cost of redundant machine/comptue resources, and the opportunity cost
-    At Google, instead of measuring by 'uptime', they measure by request success rate
-    It is important to decide whether you need a different SLO for customers and your team
-        Consumer services vs Infastructure services
-    You can decide to have planned downtime to help maintain the servers
-    "Hope is not a strategy"
-    An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between
-        innovation and reliability
+---------------
+SRE seeks to balance the risk of unavailability with the goals of rapid innovation and efficient server operations, so that
+    users' overall happiness - with features, service, and performance - is optimized.
+Costliness has two dimensions: the cost of redundant machine/comptue resources, and the opportunity cost
+At Google, instead of measuring by 'uptime', they measure by request success rate
+It is important to decide whether you need a different SLO for customers and your team
+    Consumer services vs Infastructure services
+You can decide to have planned downtime to help maintain the servers
+"Hope is not a strategy"
+An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between
+    innovation and reliability
     
+Service Level Objectives:
+-------------------------
+Service Level Indicator - carefully defined quantitative measure of some aspect of the level of service that is provided
+    Common SLIs include request latency, error rate, and system throughput
+    Availability is also important, and is often defined in terms of the fraction of well-formed requests that success (yield)
+    Durability is equally important for data storage systems
+Service Level Objective - target value or range of values for a service that is measured by an SLI
+    A natural structure for SLOs is SLI <= target or lower bound <= SLI <= upper bound
+    Queuries per second and latency are two common SLOs, however these are often linked
+    Choosing and publishing SLOs set expectations to users about how a service will perform, and this can work against you
+Service Level Agreements - explicit or implicit contract with your users that includes consequences of meeting (or missing) the SLOs they contain
+    If there is no explicit consequence, you are looking at an SLO rather than an SLA
+
+You have to decide what you and your users care about; if you choose too many indicators, then it makes it hard to pay attention to the right
+    level of attention to the indicators that matter, while choosing too few may leave significant behaviors of your system unexamined.
+Services tend to fall into a few broad categories in terms of the SLIs they find relevant
+    User-facing serving systems - usually care about availability, latency, and throughput
+    Storage systems - often emphasize latency, availability, and durability
+    Big data systems - tend to care about throughput and end-to-end latency
+    All of these systems should care about correctness
+
+It's important to not just gather metrics from the server side, but also from the user side (ex. problems with page's JavaScript)
+Instead of aggregating data into pure averages, consider sorting them into distributions, so you can monitor different percentiles
+    This helps see how different endpoints are affected at varying granularities
+You should standardize indiciators so there is no question about frequency, intervals, regions, etc.
+It's unrealistic to insist that SLOs will be met 100% of the time, as this can reduce innovation and deployment
+    Instead, allow an error budget, and track that on a daily or weekly basis
