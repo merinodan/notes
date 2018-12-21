@@ -261,7 +261,11 @@ RPM (Red Hat Package Manager) package format distros: Red Hat, CentOS, Fedora, O
         -ivh package.rpm - install package
         -e package - erase (uninstall) package
 You must have sudo permissions to use yum or apt-get
+<<<<<<< HEAD
 DEB packages have a different package manager, APT, this is on distros such as: Debian, Linux Minut, and Ubuntu
+=======
+DEB distros have a different package manager, APT, this is on distros such as: Debian, Linux Minut, and Ubuntu
+>>>>>>> 587b37507816f054a0daba9b7a5a98b725011be3
     APT - Advanced Packaging Tool
         $ apt-cache search string - serach for string
         $ apt-get install [-y] package - install package
@@ -271,6 +275,7 @@ DEB packages have a different package manager, APT, this is on distros such as: 
     $ dpkg -l - list intalled packages
         -S /path/to/file - list file's package
         -L - list all files in package
+<<<<<<< HEAD
         -i package.deb - install package
 
 Disks can be divided into parts, called partitions, which allow us to separate data
@@ -329,3 +334,6 @@ $ lsblk -f - view lables of devices
 $ blkid - view uuids of devices
 $ e2label - label a filesystem
     ex. e2label /dev/sdb3 /opt  - labels /dev/sdb3 as /opt
+=======
+        -i package.deb - install package
+>>>>>>> 587b37507816f054a0daba9b7a5a98b725011be3
