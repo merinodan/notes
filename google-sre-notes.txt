@@ -42,3 +42,18 @@ Instead of aggregating data into pure averages, consider sorting them into distr
 You should standardize indiciators so there is no question about frequency, intervals, regions, etc.
 It's unrealistic to insist that SLOs will be met 100% of the time, as this can reduce innovation and deployment
     Instead, allow an error budget, and track that on a daily or weekly basis
+
+Eliminating Toil
+----------------
+Overhead - administrative chores that need to get done: team meetings, setting/grading goals, snippets, and HR paperwork
+Toil is the kind of work tied to a production service that tends to be manual, repetitive, automatable, tactical, devoid of enduring value,
+    and that scales linearly as a service grows
+    Manual - includes work such as manually running a script that automates some task
+    Repetitive - work you do over and over
+    Automatable - if a machine could accomplish a task just as well as a human, or the need for the task could be designed away, that is toil
+    Tactical - toil is interrupt-driven and reactive, rather than strategy-driven and proactive
+    NO enduring value - if the service remains in the same state after you have finished a task, it was probably toil
+    O(n) with service growth - if the work scales up linearly with service size, traffic volume, or user count, it is probably toil
+Google advertises that toil should be below 50% of each SRE's time, the other 50% should be spent on reducing future toil or adding service features
+Why is toil bad?
+    Career stagnation, low morale, creates confusion, slows progress, sets precedents, promotes attrition, and causes breaches of faith

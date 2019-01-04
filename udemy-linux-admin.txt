@@ -329,3 +329,157 @@ $ lsblk -f - view lables of devices
 $ blkid - view uuids of devices
 $ e2label - label a filesystem
     ex. e2label /dev/sdb3 /opt  - labels /dev/sdb3 as /opt
+
+LVM - Logical Volume Manager
+Benefits:
+    Flexible capacity - you can create FS's that extend across multiple storage devices
+        You can also aggregate multiple storage devices into a single logical volume
+    Easily resize storage while online - expand or shrink FS's in real-time while the data remains online and fully accessible
+    Online data relocation - easily migrate data from one storage device to another while online
+    Convenient device naming - you can have human-readable device names of your choosing
+        ex. /dev/vg_database/lv_db_logs vs /dev/sdb3
+    Disk striping - increase throughput by allowing your system to read data in parallel
+    Data redundancy / data mirroring - inrease falult tolerance and reliability by having more than one copy of your data
+    Snapshots - create point-in-time snapshots of your FS's
+Layers of abstraction (bottom to top)
+    Storage Devices
+    Physical Volumes (PV)   - built on top of storage devices
+    Volume Group (VG)       - built on top of PVs
+    Logical Volumes (LV)    - built on top of VGs
+Process for creating a logical volume
+    Create one or more physical volumes
+    Create a volume group from those one or more physical volumes
+    Create one or more logical volumes from the volume group
+$ lvmdiskscan - shows all storage devices able to be used for LVM
+$ lsblk - shows block devices 
+$ pvcreate - creates a PV on a storage device
+    ex. pvcreate /dev/sdb - creates PV on /dev/sdb
+$ pvs - view list of PVs
+$ vgcreate - creates a VG on a PV
+    ex. vgcreate vg_app /dev/sdb - creates volume group vg_app on PV /dev/sdb
+$ vgs - view list of VGs
+$ lvcreate - creates a LV on a VG
+    ex. lvcreate -L 20G -n lv_data vg_app - creates LV lv_data with 20G on vg_app
+$ lvs - view list of LVs
+$ lvdisplay - detailed view of LVs
+ex. $ mkfs -t ext4 /dev/vg_app/lv_data - creates a new file system on our new LV
+ex. $ mount /dev/vg_app/lv_data /data - mount the file system
+$ vgextend - extends a VG
+    ex. pvcreate /dev/sdc - create a new PV
+    ex. vgextend vg_app /dev/sdc - extend vg_app to /dev/sdc
+$ lvextend - extends a LV
+    ex. lvextend -L +5G -r /dev/vg_app/lv_data - extends lv_data to whatever it was, plus 5 GB
+$ resize2fs - resize a file system to fit a new, extended LV
+$ lvcreate -m 1 - creates copies of data
+    ex. lvcreate -m 1 - L 5G -n lv_secrets vg_safe
+$ lvremove - removes a LV
+    ex. lvremove /dev/vg_safe/lv_secrets - removes the lv_secrets LV
+$ vgreduce - removes a PV from a VG
+$ pvremove - removes a PV
+$ vgremove - removes a VG
+$ pvmove - moves all data from one PV to another PV
+    ex. pvmove /dev/sdb /dev/sde
+
+Accounts have: username, UID, default group, comments, shell, home directory location
+    All this info is stored in /etc/passwd
+        Format: username:passwd:UID:GID:comments:home_dir:shell
+            ex. root:x:0:0:root:/root:/bin/bash
+Usernames are less than 8 chars in length by convention, and are typically all lowercase
+Encrypted passwords are stored in /etc/shadow, and this is only readable by root
+UIDs are unique numbers
+    Root account is always UID 0
+    System accounts have UIDs < 1000
+GID is the account's default group
+    Users can switch groups using $ newgrp
+Comment field typically contains user's full name, or what it is used for (also called GECOS)
+Upon login the user is placed into their root directory, or if none, then /
+Shells are executed when a user logs in
+    A list of all available shells on a system is listed on /etc/shells
+    To prevent interactive use, use /usr/sbin/nologin or /bin/false as the shell
+$ useradd [options] username - adds a new user
+    -c "COMMENT" - comments for the account
+    -m - create the home directory
+        Contents of /etc/skel are copied into the new home directory, typically contains shell config files (.profile, .bashrc, etc)
+    -s /shell/path - path to the user's shell
+    -g GROUP - specify default group
+    -r - creates a system account
+    -d - specifies home directory
+    -u - specify UID
+$ passwd username - sets a password for a user
+$ userdel username - deletes a user
+    -r - deletes their home directory as well
+$ usermod [options] username
+    -c "COMMENT" - comments account
+    -g - specify default group
+    -G GROUP1, GROUPN - additional groups
+    -s /shell/path - path to the user's shell
+/etc/group - holds group details
+    Format: group_name:password:GID:account1,accountN
+        ex. sales:x:1001:john,mary
+$ groups [username] - checks what groups a user is part of
+$ groupadd [options] group_name - creates a new group
+    ex. groupadd web
+$ groupdel group_name - deletes a group
+$ groupmod [options] group_name - edit an existing group
+    -g GID - change the group ID to GID
+    -n GROUP - rename the group to GROUP
+
+TCP/IP - used for network communications
+    TCP - Transmission Control Protocol - controls data exchange
+    IP - Internet Protocol - sends data from one device to another
+Hosts - devices on a network that have an IP address
+Each device must have an IP address, subnet mask, and broadcast address
+IP addresses have two parts
+    Network address
+    Host address
+    Each must be unique for proper routing
+Address classes are used to determine the network address and host address
+    A - 1.0 -> 127.0 (ex. 17.24.88.9)
+    B - 128.0 -> 191.255 (ex. 183.194.46.31)
+    C - 192.0.0 -> 233.255.255 (ex. 199.83.131.186)
+    These classes specify the number of hosts allowed
+Subnet masks - specify how many octets are host addresses and how many are network addresses
+    A - 255.0.0.0
+    B - 255.255.0.0
+    C - 255.255.255.0
+Broadcast address is used to send data to all hosts on a given network
+    A - x.255.255.255
+    B - x.x.255.255
+    C - x.x.x.255
+CIDR - Classless Inter-Domain Routing - allows you to specify subnets
+    ex. IP 121.67.198.94 is a class A network 121.0.0.0, subnet 255.0.0.0, and broadcast 121.255.255.0
+    However, if you specify a subnet 255.255.255.0, you can have the following CIDR
+        network 121.67.198.0, subnet 255.255.255.0, and broadcast 121.67.198.255
+Reserved private address space
+    A - 10.0.0.0 -> 10.255.255.255
+    B - 172.16.0.0 -> 172.31.255.255
+    C - 192.168.0.0 -> 192.168.255.255
+$ ip address - shows ip address info, newer
+$ ifconfig - shows ip address info, deprecated
+hostname - human-readable name for an IP address
+DNS - translate human-readable names to IP addresses, and vice versa
+    FQDN - fully qualified domain name (ex. webprod01.mycompany.com)
+    TLD - top-level domain name (ex. .com, .net, .org)
+    Domains - below (to the left of) TLD
+    sub-domain - below (to the left of) the domain (ex. webprod01.us.mycompany.com)
+$ hostname - displays the hostname
+    -f - shows FQDN
+    You can edit the /etc/hostname file to change the hostname, or by supplying a name to $ hostname
+$ host - resolves a DNS name
+    ex. host google.com
+/etc/hosts - contains list of IPs and hostnames
+    Format: IP FQDN alias(es)
+        ex. 10.11.12.13 danmer.info dan
+        With this, you could just type in dan in the browser and it will send you to 10.11.12.13
+/etc/nsswitch.conf - NSS - Name Service Switch - controls the search order for DNS resolutions (ex. if you don't want to look in hosts first)
+Ports identify services on a host
+    When a service starts it binds itself to a port and listens for traffic destined for its port
+    Ports 1 - 1023 are 'well-known' ports and can only be opened with superuser
+/etc/services maps port names to port numbers
+DHCP - Dynamic Host Configuration Protocol - primarily used to assign hosts on a network
+    Assigns IP address to DHCP clients
+    Each IP is 'leased' from the pool of IP addresses the DHCP server manages
+    The lease expiration time is configurable on the DHCP server, and the client must renew the lease if it wants to keep using the address
+    You can configure a DHCP client or assign a static IP address on /etc/network/interfaces
+$ ip address add IP dev NETWORK_DEVICE - manually assigns an IP address
+$ ifup / ifdown can be used instead of infconfig / ip
