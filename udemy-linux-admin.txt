@@ -273,6 +273,92 @@ DEB packages have a different package manager, APT, this is on distros such as: 
         -L - list all files in package
         -i package.deb - install package
 
+BIOS - Basic Input/Output System
+    Performs the POST (Power-On Self Test) - primary function is to find and load bootloader
+    Knows about bootable drives in an order that caN be changed
+Bootloader
+    GRUB - Grand Unified Bootloader 
+    Starts the OS with different options
+Initial Ram Disk (initrd)
+    Temporary file system loaded from disk and stored in memory
+    Contains helpers and modules required to load permanent OS file system
+/boot - contains the files required to boot Linux
+    Holds initrd, kernel, and boot loader config
+Kernel ring buffer - contains messages from Linux kernel
+    $ dmesg - views ring buffer
+    Once buffer is filled, old messages are deleted
+    Also stored in /var/log/dmesg
+    Stored in vmlinux or if compressed, vmlinuz
+Runlevels - determines what processes and services to start
+    0 - Shuts down system
+    1 - Single user mode. Used for maintenance
+    2 - Multi-user mode with GUI (Debian/Ubuntu)
+    3 - Multi-user text mode (Red Hat/CentOS)
+    4 - Undefined
+    5 - Multi-user mode with GUI (Red Hat/CentOS)
+    6 - Reboot
+Init - controls runlevels
+    Stored in /etc/inittab
+    Being phased out by systemd
+    telinit [runlevel] - changes to a certain runlevel
+        ex. telinit 6 - reboots
+        ex. telinit 0 - poweroff
+Systemd - uses targets instead of runlevels
+    /lilb/systemd/system
+    systemctl isolate [target] - change to certain target
+        ex. systemctl isolate reboot.target - reboots
+        ex. systemctl isolate poweroff.target - poweroff
+shutdown [options] time [message]
+    ex. shutdown -r 15:30 "rebooting!"
+    ex. shutdown -r now
+
+Syslog standard - aids in the processing of messages
+    Allows logging to be centrally controlled
+    Uses facilities and severities to categorize messages
+    Facilities ex.
+        0 - kern - kernal messages
+        2 - mail - mail system
+        3 - daemon - system daemons
+        11 - ftp - ftp daemon
+        15 - cron - clock daemon
+        16 - local0 - local use 0
+    Severities
+        0 - emergency - system is unusable
+        3 - error - error conditions
+        6 - info - informational messages
+    Syslog servers process syslog messages based on rules
+        ex. syslogd, rsyslog
+rsyslog - found in /etc/rsyslog.conf
+Logging rules
+    Selector field (examples)
+        FACILITY.SEVERITY
+        mail.*
+        mail
+        FACILITY.none
+        FACILITY_1.SEVERITY; FACILITY_@.SEVERItY
+    Action field
+        Determines how a message is processed
+    ex. mail.*  /var/log/mail.log - will match messages of facility of mail with any sev to mail.log
+    Caching is used if the path starts with a hyphen - won't perform sync for each log message
+        This means you may lose some messages during a system crash
+        Can improve I/O performance
+        ex. mail.info   -/var/log/mail.info
+    ex. auth, authpriv.*    /var/log/auth.log - writes auth and authpriv to auth.log
+    ex. *.*; auth.none, authpriv.none   -/var/log/syslog - writes everything else to syslog
+$ logger [options] message - generates syslog messages (such as in testing)
+    -p FACILITY.SEVERITY
+    -t TAG
+    ex. logger -p mail.info -t mailtest "Test."
+logrotate - can rotate, compress, and remove log files
+    /etc/logrotate.conf
+    Useful for keeping certain amounts of logs
+    ex. weekly                      - will rotate every week
+        rotate 4                    - will keep 4 weeks worth of logs
+        create                      - makes sure new empty log file is created
+        compressed                  - compresses
+        include /etc/logrotate.d
+    $ logrotate -fv [logrotate.conf] - tests logrotate
+
 Disks can be divided into parts, called partitions, which allow us to separate data
     ex. 1) OS, 2) Application, 3) User, 4) Swap
     ex. 1) OS, 2) User home directories
