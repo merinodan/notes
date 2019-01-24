@@ -15,3 +15,10 @@ Link: https://12factor.net/
 Thoughts: Bible for buildilng a modern application. Twelve factors: codebase, dependencies, config, backing services,
     build (release & run), processes, port binding, concurrency, disposability, dev/prod parity, logs, admin processes. These things
     combined can help build modern, scalable, reliable, programs.
+
+Holy Grail: Go best practices, six years in
+Date: January 24, 2019
+Date released: 2016
+Link: https://peter.bourgon.org/go-best-practices-2016/
+Thoughts: Bible for Go and its best practices. Defined from a very technical standpoint, so some of it is kinda hard to follow
+    along with completely. Still good to take note of the things stated here and Bourgon's "top tips" for writing in Go.
