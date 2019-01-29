@@ -22,3 +22,11 @@ Date released: 2016
 Link: https://peter.bourgon.org/go-best-practices-2016/
 Thoughts: Bible for Go and its best practices. Defined from a very technical standpoint, so some of it is kinda hard to follow
     along with completely. Still good to take note of the things stated here and Bourgon's "top tips" for writing in Go.
+
+Article: What's in a name?
+Date: January 29, 2019
+Date released: October 2014
+Link: https://talks.golang.org/2014/names.slide#1
+Thoughts: Written by Andrew Gerrard at Google, provides a guideline for how variables should be named in Go. Variables should
+    be short (easy to type), consistent (easy to guess), and accurate (easy to understand). A rule of thumb is that the greater
+    the distance between a name's declaration and uses, the longer a name should be.
