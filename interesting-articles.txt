@@ -30,3 +30,11 @@ Link: https://talks.golang.org/2014/names.slide#1
 Thoughts: Written by Andrew Gerrard at Google, provides a guideline for how variables should be named in Go. Variables should
     be short (easy to type), consistent (easy to guess), and accurate (easy to understand). A rule of thumb is that the greater
     the distance between a name's declaration and uses, the longer a name should be.
+
+Article: DevOps Team Topologies
+Date: January 29, 2019
+Date released: 2013
+Link: https://web.devopstopologies.com/index.html
+Thoughts: An excellent piece that describes where teams may fail in their strive to achieve DevOpsy-ness. Shows anti-types
+    (what not to do) in combination with ideal team topologies (what to do) to show the comparision between different styles
+    of DevOps, since a style that works for one company may not necessarily work for another.
