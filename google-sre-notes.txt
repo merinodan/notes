@@ -84,3 +84,33 @@ Four Golden Signals of monitoring
 Make your system as granular as it needs to be
 Your entire monitoring system should be as simple as possible, and no simpler
 Sometimes you should accept a decrease in availability to take care of a longer-run stability in the system
+
+The Evolution of Automation at Google
+-------------------------------------
+Autonomous systems are superior to manual operation and software-based automation
+Automation offers:
+    - Consistency
+    - A platform. That can be extended, applied to more systems, or put out for profit
+        The platform can also centralize mistakes
+    - Faster repairs
+    - Faster action/reactions
+    - Time saving   // once you have encapsulated some task in automation, anyone can execute the task
+You should create platforms, or position yourself to create platforms, so you can own your stack
+Automation is "meta-software" - software to act on software
+Google often automates to manage the lifecycle of systems, not their data
+Theoretically, it is better to not need automation at all than to need autonomous systems. This internalizes the application
+The evolution of automation follows a path:
+    1. No automation
+    2. Externally maintained system-specific automation
+    3. Externall maintained generic automation
+    4. Internally maintained system-specific automation
+    5. Systems that don't need any automation
+When developing autonomous systems, be careful of relying on implicit safetly signals that can work against you
+Automations prcesses can vary in three respsects: 
+    - Competence (accuracy)
+    - Latency (how quickly all steps are executed)
+    - Relevance (proportion of real-world process covered by automation)
+The most functional tools are usually written by those who use them
+Service owners should be responsible for turnup processes and its automation
+Google brought various domains such as data distribution, APIs, and distributed systems to bear upon the domain of infrastructure management
+Automation is hard to implement, but more often than not it is worth it
