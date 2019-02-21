@@ -114,3 +114,34 @@ The most functional tools are usually written by those who use them
 Service owners should be responsible for turnup processes and its automation
 Google brought various domains such as data distribution, APIs, and distributed systems to bear upon the domain of infrastructure management
 Automation is hard to implement, but more often than not it is worth it
+
+Release Engineering
+-------------------
+Release engineering a is a relatively new discipline that encapsulates a solid (if not expert) understanding of source code management,
+compilers, build configuration languages, automated build tools, package managers, and installers
+Running reliable services requires running reliable release processes
+SREs should build binaries and configurations in a reproducible, automated way so releases are repeatable
+Release engineers make sure tools behave correctly by default and are adequately documented to make it easier for other teams
+Four major philosophies:
+    1. Self-service model - release best practices and tools should be developed to allow dev teams to achieve a high release
+        velocity because individual teams can decide how often and when to release new versions of products. Projects should
+        be automatically built and released using automated build systems and deployment tools
+    2. High velocity - frequent releases result in fewer changes between versions, this makes testing and troubleshooting easier
+    3. Hermetic builds - build tools must ensure consistency and repeatability (if it works on their machine, it should work on mine)
+        Builds should be hermetic - insensitive to libraries and software on the build machine - instead, they should depend on known
+        versions of build tools and must be self-contained. 
+            Cherry picking - a strategy that ensures that older build tools are versioned along with the project themselves, so
+                a bug in an older version can still be compiled with the compiler at the time, and not a newer version
+    4. Enforcement of policies and procedures - there should be several layers of security and access control to determine who can
+        perform certain operations when releasing a project. These things include but are not limited to: applying source code changes,
+        specifying actions to be performed during release, deploying new releases, changing build configs, etc.
+Google has an atutomated release system called Rapid, that is intended to deliver scalable, hermetic, and reliable releases
+Building is handled by Blaze (now Bazel in open-source), which allows engineers to define build targets and specify dependencies
+Most major projects don't release directly from the mainline branch, instead bug fixes are submitted to the mainline and then
+    cherry picked into the branch
+Google uses a contiuous test system that runs unit tests against the code in the mainline each time a change is submitted
+Packaging is handled by a the Midas Package Manager (MPM), which assembles packages based on Blaze rules. There is also a labeling
+    system that indiciates a package's location in the release process (dev, canary, production). MPM ensures that software is 
+    distributed to the production machines correctly
+Configuration management isn't as simple as it may seem, so you should evaluate your use case on a case-by-case basis
+You should implement release engineering early on in a project, as it becomes more expensive and difficult to retrofit later on
