@@ -1,8 +1,6 @@
-Unsurprisingly, the production environment at Google is very layered and dense.
-
-Principles:
+PART II - Principles:
 ===========
-Embracing Risk:
+Ch 3 - Embracing Risk:
 ---------------
 SRE seeks to balance the risk of unavailability with the goals of rapid innovation and efficient server operations, so that
     users' overall happiness - with features, service, and performance - is optimized.
@@ -15,7 +13,7 @@ You can decide to have planned downtime to help maintain the servers
 An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between
     innovation and reliability
     
-Service Level Objectives:
+Ch 4 - Service Level Objectives:
 -------------------------
 Service Level Indicator - carefully defined quantitative measure of some aspect of the level of service that is provided
     Common SLIs include request latency, error rate, and system throughput
@@ -43,7 +41,7 @@ You should standardize indiciators so there is no question about frequency, inte
 It's unrealistic to insist that SLOs will be met 100% of the time, as this can reduce innovation and deployment
     Instead, allow an error budget, and track that on a daily or weekly basis
 
-Eliminating Toil
+Ch 5 - Eliminating Toil
 ----------------
 Overhead - administrative chores that need to get done: team meetings, setting/grading goals, snippets, and HR paperwork
 Toil is the kind of work tied to a production service that tends to be manual, repetitive, automatable, tactical, devoid of enduring value,
@@ -58,7 +56,7 @@ Google advertises that toil should be below 50% of each SRE's time, the other 50
 Why is toil bad?
     Career stagnation, low morale, creates confusion, slows progress, sets precedents, promotes attrition, and causes breaches of faith
 
-Monitoring Distributed Systems
+Ch 6 - Monitoring Distributed Systems
 ------------------------------
 Monitoring - collecting, processing, aggregating, and displaying real-time quantitative data about a system, such as query counts
     and types, error counts and types, processing times, and server lifetimes
@@ -85,7 +83,7 @@ Make your system as granular as it needs to be
 Your entire monitoring system should be as simple as possible, and no simpler
 Sometimes you should accept a decrease in availability to take care of a longer-run stability in the system
 
-The Evolution of Automation at Google
+Ch 7 - The Evolution of Automation at Google
 -------------------------------------
 Autonomous systems are superior to manual operation and software-based automation
 Automation offers:
@@ -115,7 +113,7 @@ Service owners should be responsible for turnup processes and its automation
 Google brought various domains such as data distribution, APIs, and distributed systems to bear upon the domain of infrastructure management
 Automation is hard to implement, but more often than not it is worth it
 
-Release Engineering
+Ch 8 - Release Engineering
 -------------------
 Release engineering a is a relatively new discipline that encapsulates a solid (if not expert) understanding of source code management,
 compilers, build configuration languages, automated build tools, package managers, and installers
