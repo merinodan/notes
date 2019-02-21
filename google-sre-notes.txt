@@ -143,3 +143,17 @@ Packaging is handled by a the Midas Package Manager (MPM), which assembles packa
     distributed to the production machines correctly
 Configuration management isn't as simple as it may seem, so you should evaluate your use case on a case-by-case basis
 You should implement release engineering early on in a project, as it becomes more expensive and difficult to retrofit later on
+
+Simplicity
+----------
+"The price of reliability is the pursuit of the utmost simplicity" - C.A.R. Hoare
+It is important as an SRE to balance system stability and agility, however, it is not a teeter-tottering of balance, rather, one
+    can help improve the other
+The virtue of boring - unlike most other things in life, "boring" is a positive attribute in software. We don't want programs to be
+    spontaneous and interesting; rather we want them to stick to the script and act predictably
+Essential complexity - the complexity inherent in a given situation that cannot be removed from a problem definition
+Accidental complexity - more fluid and can be resolved with engineering effort
+SRE teams should push back when accidental complexity is introducted into a system and constantly strive to elimate complexity
+    in systems they onboard
+Source control makes it easy to reverse changes, so it is safe to do large-scale purges of a source tree
+Every line of code changed or added to a project creates the potential for introducint new defects and bugs
