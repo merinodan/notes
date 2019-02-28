@@ -144,7 +144,7 @@ Packaging is handled by a the Midas Package Manager (MPM), which assembles packa
 Configuration management isn't as simple as it may seem, so you should evaluate your use case on a case-by-case basis
 You should implement release engineering early on in a project, as it becomes more expensive and difficult to retrofit later on
 
-Simplicity
+Ch 9 - Simplicity
 ----------
 "The price of reliability is the pursuit of the utmost simplicity" - C.A.R. Hoare
 It is important as an SRE to balance system stability and agility, however, it is not a teeter-tottering of balance, rather, one
