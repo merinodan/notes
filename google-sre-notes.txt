@@ -157,3 +157,16 @@ SRE teams should push back when accidental complexity is introducted into a syst
     in systems they onboard
 Source control makes it easy to reverse changes, so it is safe to do large-scale purges of a source tree
 Every line of code changed or added to a project creates the potential for introducint new defects and bugs
+
+PART III - Practices:
+====================
+Put simply, SREs run services and ultimately responsible for the health of these services
+    Services - set of related systems, operated for users, who may be internal or externally
+There is a service reliability hierarchy, from bottom to top:
+    Monitoring
+    Incident Response
+    Postmortem and Root-Cause Analysis
+    Testing
+    Capacity Planning
+    Development
+    Product
