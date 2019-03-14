@@ -38,3 +38,10 @@ Link: https://web.devopstopologies.com/index.html
 Thoughts: An excellent piece that describes where teams may fail in their strive to achieve DevOpsy-ness. Shows anti-types
     (what not to do) in combination with ideal team topologies (what to do) to show the comparision between different styles
     of DevOps, since a style that works for one company may not necessarily work for another.
+
+Article: The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)
+Date: March 14, 2019 (Pi day!)
+Date released: October 8, 2003
+Link: https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/
+Thoughts: An interesting article written by Joel Spolsky, the creator of StackOverflow. Talks about the interesting conception of Unicode and
+	the corresponding creation of UTF-8 and why it was necessary.
