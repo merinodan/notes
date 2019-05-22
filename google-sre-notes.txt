@@ -3,82 +3,82 @@ PART II - Principles:
 Ch 3 - Embracing Risk:
 ---------------
 SRE seeks to balance the risk of unavailability with the goals of rapid innovation and efficient server operations, so that
-    users' overall happiness - with features, service, and performance - is optimized.
+	users' overall happiness - with features, service, and performance - is optimized.
 Costliness has two dimensions: the cost of redundant machine/comptue resources, and the opportunity cost
 At Google, instead of measuring by 'uptime', they measure by request success rate
 It is important to decide whether you need a different SLO for customers and your team
-    Consumer services vs Infastructure services
+	Consumer services vs Infastructure services
 You can decide to have planned downtime to help maintain the servers
 "Hope is not a strategy"
 An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between
-    innovation and reliability
-    
+	innovation and reliability
+	
 Ch 4 - Service Level Objectives:
 -------------------------
 Service Level Indicator - carefully defined quantitative measure of some aspect of the level of service that is provided
-    Common SLIs include request latency, error rate, and system throughput
-    Availability is also important, and is often defined in terms of the fraction of well-formed requests that success (yield)
-    Durability is equally important for data storage systems
+	Common SLIs include request latency, error rate, and system throughput
+	Availability is also important, and is often defined in terms of the fraction of well-formed requests that success (yield)
+	Durability is equally important for data storage systems
 Service Level Objective - target value or range of values for a service that is measured by an SLI
-    A natural structure for SLOs is SLI <= target or lower bound <= SLI <= upper bound
-    Queuries per second and latency are two common SLOs, however these are often linked
-    Choosing and publishing SLOs set expectations to users about how a service will perform, and this can work against you
+	A natural structure for SLOs is SLI <= target or lower bound <= SLI <= upper bound
+	Queuries per second and latency are two common SLOs, however these are often linked
+	Choosing and publishing SLOs set expectations to users about how a service will perform, and this can work against you
 Service Level Agreements - explicit or implicit contract with your users that includes consequences of meeting (or missing) the SLOs they contain
-    If there is no explicit consequence, you are looking at an SLO rather than an SLA
+	If there is no explicit consequence, you are looking at an SLO rather than an SLA
 
 You have to decide what you and your users care about; if you choose too many indicators, then it makes it hard to pay attention to the right
-    level of attention to the indicators that matter, while choosing too few may leave significant behaviors of your system unexamined.
+	level of attention to the indicators that matter, while choosing too few may leave significant behaviors of your system unexamined.
 Services tend to fall into a few broad categories in terms of the SLIs they find relevant
-    User-facing serving systems - usually care about availability, latency, and throughput
-    Storage systems - often emphasize latency, availability, and durability
-    Big data systems - tend to care about throughput and end-to-end latency
-    All of these systems should care about correctness
+	User-facing serving systems - usually care about availability, latency, and throughput
+	Storage systems - often emphasize latency, availability, and durability
+	Big data systems - tend to care about throughput and end-to-end latency
+	All of these systems should care about correctness
 
 It's important to not just gather metrics from the server side, but also from the user side (ex. problems with page's JavaScript)
 Instead of aggregating data into pure averages, consider sorting them into distributions, so you can monitor different percentiles
-    This helps see how different endpoints are affected at varying granularities
+	This helps see how different endpoints are affected at varying granularities
 You should standardize indiciators so there is no question about frequency, intervals, regions, etc.
 It's unrealistic to insist that SLOs will be met 100% of the time, as this can reduce innovation and deployment
-    Instead, allow an error budget, and track that on a daily or weekly basis
+	Instead, allow an error budget, and track that on a daily or weekly basis
 
 Ch 5 - Eliminating Toil
 ----------------
 Overhead - administrative chores that need to get done: team meetings, setting/grading goals, snippets, and HR paperwork
 Toil is the kind of work tied to a production service that tends to be manual, repetitive, automatable, tactical, devoid of enduring value,
-    and that scales linearly as a service grows
-    Manual - includes work such as manually running a script that automates some task
-    Repetitive - work you do over and over
-    Automatable - if a machine could accomplish a task just as well as a human, or the need for the task could be designed away, that is toil
-    Tactical - toil is interrupt-driven and reactive, rather than strategy-driven and proactive
-    NO enduring value - if the service remains in the same state after you have finished a task, it was probably toil
-    O(n) with service growth - if the work scales up linearly with service size, traffic volume, or user count, it is probably toil
+	and that scales linearly as a service grows
+	Manual - includes work such as manually running a script that automates some task
+	Repetitive - work you do over and over
+	Automatable - if a machine could accomplish a task just as well as a human, or the need for the task could be designed away, that is toil
+	Tactical - toil is interrupt-driven and reactive, rather than strategy-driven and proactive
+	NO enduring value - if the service remains in the same state after you have finished a task, it was probably toil
+	O(n) with service growth - if the work scales up linearly with service size, traffic volume, or user count, it is probably toil
 Google advertises that toil should be below 50% of each SRE's time, the other 50% should be spent on reducing future toil or adding service features
 Why is toil bad?
-    Career stagnation, low morale, creates confusion, slows progress, sets precedents, promotes attrition, and causes breaches of faith
+	Career stagnation, low morale, creates confusion, slows progress, sets precedents, promotes attrition, and causes breaches of faith
 
 Ch 6 - Monitoring Distributed Systems
 ------------------------------
 Monitoring - collecting, processing, aggregating, and displaying real-time quantitative data about a system, such as query counts
-    and types, error counts and types, processing times, and server lifetimes
+	and types, error counts and types, processing times, and server lifetimes
 White-box monitoring - monitoring based on metrics exposed by the internals of the system, including logs, interfaces like the JVM
-    , or an HTTP handler that emits internal statistics
+	, or an HTTP handler that emits internal statistics
 Black-box monitoring - testing externally visible behavior as a user would see it
 Alert - notification intended to be read by a human and is pushed to system such as a bug or ticket queue, email alias, or page
-    Also classified as tickets, email alerts, and pages
+	Also classified as tickets, email alerts, and pages
 Why monitor?
-    Analyzing long-term trends
-    Comparing over time or experiment groups
-    Alerting
-    Building dashboards
-    Conducting ad hoc retrospective analysis (i.e., debugging)
+	Analyzing long-term trends
+	Comparing over time or experiment groups
+	Alerting
+	Building dashboards
+	Conducting ad hoc retrospective analysis (i.e., debugging)
 Alerting should tell us when something is broken, or perhaps about to break
 Effective alerting systems have good signal and very low noise
 Black-box monitoring is more symptom-oriented while white-box can be both
 Four Golden Signals of monitoring
-    1. Latency
-    2. Traffic
-    3. Errors
-    4. Saturation
+	1. Latency
+	2. Traffic
+	3. Errors
+	4. Saturation
 Make your system as granular as it needs to be
 Your entire monitoring system should be as simple as possible, and no simpler
 Sometimes you should accept a decrease in availability to take care of a longer-run stability in the system
@@ -87,27 +87,27 @@ Ch 7 - The Evolution of Automation at Google
 -------------------------------------
 Autonomous systems are superior to manual operation and software-based automation
 Automation offers:
-    - Consistency
-    - A platform. That can be extended, applied to more systems, or put out for profit
-        The platform can also centralize mistakes
-    - Faster repairs
-    - Faster action/reactions
-    - Time saving   // once you have encapsulated some task in automation, anyone can execute the task
+	- Consistency
+	- A platform. That can be extended, applied to more systems, or put out for profit
+		The platform can also centralize mistakes
+	- Faster repairs
+	- Faster action/reactions
+	- Time saving	// once you have encapsulated some task in automation, anyone can execute the task
 You should create platforms, or position yourself to create platforms, so you can own your stack
 Automation is "meta-software" - software to act on software
 Google often automates to manage the lifecycle of systems, not their data
 Theoretically, it is better to not need automation at all than to need autonomous systems. This internalizes the application
 The evolution of automation follows a path:
-    1. No automation
-    2. Externally maintained system-specific automation
-    3. Externall maintained generic automation
-    4. Internally maintained system-specific automation
-    5. Systems that don't need any automation
+	1. No automation
+	2. Externally maintained system-specific automation
+	3. Externall maintained generic automation
+	4. Internally maintained system-specific automation
+	5. Systems that don't need any automation
 When developing autonomous systems, be careful of relying on implicit safetly signals that can work against you
 Automations prcesses can vary in three respsects: 
-    - Competence (accuracy)
-    - Latency (how quickly all steps are executed)
-    - Relevance (proportion of real-world process covered by automation)
+	- Competence (accuracy)
+	- Latency (how quickly all steps are executed)
+	- Relevance (proportion of real-world process covered by automation)
 The most functional tools are usually written by those who use them
 Service owners should be responsible for turnup processes and its automation
 Google brought various domains such as data distribution, APIs, and distributed systems to bear upon the domain of infrastructure management
@@ -121,26 +121,26 @@ Running reliable services requires running reliable release processes
 SREs should build binaries and configurations in a reproducible, automated way so releases are repeatable
 Release engineers make sure tools behave correctly by default and are adequately documented to make it easier for other teams
 Four major philosophies:
-    1. Self-service model - release best practices and tools should be developed to allow dev teams to achieve a high release
-        velocity because individual teams can decide how often and when to release new versions of products. Projects should
-        be automatically built and released using automated build systems and deployment tools
-    2. High velocity - frequent releases result in fewer changes between versions, this makes testing and troubleshooting easier
-    3. Hermetic builds - build tools must ensure consistency and repeatability (if it works on their machine, it should work on mine)
-        Builds should be hermetic - insensitive to libraries and software on the build machine - instead, they should depend on known
-        versions of build tools and must be self-contained. 
-            Cherry picking - a strategy that ensures that older build tools are versioned along with the project themselves, so
-                a bug in an older version can still be compiled with the compiler at the time, and not a newer version
-    4. Enforcement of policies and procedures - there should be several layers of security and access control to determine who can
-        perform certain operations when releasing a project. These things include but are not limited to: applying source code changes,
-        specifying actions to be performed during release, deploying new releases, changing build configs, etc.
+	1. Self-service model - release best practices and tools should be developed to allow dev teams to achieve a high release
+		velocity because individual teams can decide how often and when to release new versions of products. Projects should
+		be automatically built and released using automated build systems and deployment tools
+	2. High velocity - frequent releases result in fewer changes between versions, this makes testing and troubleshooting easier
+	3. Hermetic builds - build tools must ensure consistency and repeatability (if it works on their machine, it should work on mine)
+		Builds should be hermetic - insensitive to libraries and software on the build machine - instead, they should depend on known
+		versions of build tools and must be self-contained. 
+			Cherry picking - a strategy that ensures that older build tools are versioned along with the project themselves, so
+				a bug in an older version can still be compiled with the compiler at the time, and not a newer version
+	4. Enforcement of policies and procedures - there should be several layers of security and access control to determine who can
+		perform certain operations when releasing a project. These things include but are not limited to: applying source code changes,
+		specifying actions to be performed during release, deploying new releases, changing build configs, etc.
 Google has an atutomated release system called Rapid, that is intended to deliver scalable, hermetic, and reliable releases
 Building is handled by Blaze (now Bazel in open-source), which allows engineers to define build targets and specify dependencies
 Most major projects don't release directly from the mainline branch, instead bug fixes are submitted to the mainline and then
-    cherry picked into the branch
+	cherry picked into the branch
 Google uses a contiuous test system that runs unit tests against the code in the mainline each time a change is submitted
 Packaging is handled by a the Midas Package Manager (MPM), which assembles packages based on Blaze rules. There is also a labeling
-    system that indiciates a package's location in the release process (dev, canary, production). MPM ensures that software is 
-    distributed to the production machines correctly
+	system that indiciates a package's location in the release process (dev, canary, production). MPM ensures that software is 
+	distributed to the production machines correctly
 Configuration management isn't as simple as it may seem, so you should evaluate your use case on a case-by-case basis
 You should implement release engineering early on in a project, as it becomes more expensive and difficult to retrofit later on
 
@@ -148,28 +148,28 @@ Ch 9 - Simplicity
 ----------
 "The price of reliability is the pursuit of the utmost simplicity" - C.A.R. Hoare
 It is important as an SRE to balance system stability and agility, however, it is not a teeter-tottering of balance, rather, one
-    can help improve the other
+	can help improve the other
 The virtue of boring - unlike most other things in life, "boring" is a positive attribute in software. We don't want programs to be
-    spontaneous and interesting; rather we want them to stick to the script and act predictably
+	spontaneous and interesting; rather we want them to stick to the script and act predictably
 Essential complexity - the complexity inherent in a given situation that cannot be removed from a problem definition
 Accidental complexity - more fluid and can be resolved with engineering effort
 SRE teams should push back when accidental complexity is introducted into a system and constantly strive to elimate complexity
-    in systems they onboard
+	in systems they onboard
 Source control makes it easy to reverse changes, so it is safe to do large-scale purges of a source tree
 Every line of code changed or added to a project creates the potential for introducint new defects and bugs
 
 PART III - Practices:
 ====================
 Put simply, SREs run services and ultimately responsible for the health of these services
-    Services - set of related systems, operated for users, who may be internal or externally
+	Services - set of related systems, operated for users, who may be internal or externally
 There is a service reliability hierarchy, from bottom to top:
-    Monitoring
-    Incident Response
-    Postmortem and Root-Cause Analysis
-    Testing
-    Capacity Planning
-    Development
-    Product
+	Monitoring
+	Incident Response
+	Postmortem and Root-Cause Analysis
+	Testing
+	Capacity Planning
+	Development
+	Product
 
 Ch 10 - Practical Alerting:
 ==========================
@@ -200,3 +200,51 @@ The most important on-call resources are:
 	Clear escalation paths
 	Well-defined incident-management procedures
 	A blameless postmortem culture
+
+Ch 12 - Effective Troubleshooting:
+=================================
+Troubleshooting relies upon two main factors: knowing how to troubleshoot generically and a solid understanding of the system
+Troubleshooting is a process in which you hypothesize why something is not working and test those hypotheses
+	You can test by comparing the state against our hypotheses or by changing the system in a controlled way to see what changes
+Common pitfalls
+	Misunderstanding system metrics
+	Misunderstanding how to change the system or its environment
+	Being just plain wrong or making assumptions
+	Hunting down correlations that are just coincidences
+Some fixes to these pitfalls include simply knowing the system better and remembering that all failures are not equally probable
+Every problem starts with a problem report, that tells you the expected behavior, actual behavior, and possibly how to reproduce it
+The first step when a problem arises is to Triage
+	The first step should NOT be to troubleshoot, instead it should be to make the system work as well as it can under the circumstances
+	Stop the bleeding before you try to find the root problems
+The second step is to Examine
+	Look at your monitoring systems and logs
+	For logs, you may want to filter by detail level or to sample only a certain amount of data points, as to avoid data overload
+		A good way to implement this is to have a selection language to help with this filtering
+The last step is to Diagnose
+	There are a few generic practices to help you find out what's wrong:
+	Simplify and reduce - look at the connections between components 
+		Split by component or do recursive bisections to find out where the problem lies
+	Ask "what", "where", and "why" - find out what a system is doing, why it's doing it, and where the resources are being used
+	What touched it last - trace what possible changes to a system might have caused something, or what deploy was before the issue
+It's helpful to build tools to help diagnose particular services
+After coming up with possible causes, try to find the actual root using experimental methods by testing
+	Ideally, tests should be mutually exclusive, so you can rule out certain hypotheses
+	Consider the obvious first, considering risks to the system as well
+	Consider that an experiment may provide misleading results due to confounding factors
+	Tests may have unintended side effects that may skew future tests
+	Some tests may be suggestive, so sometimes you may have to settle for less conclusive evidence
+It's important to document exactly what you observe, what you do, and the results you see so in the future you have a reference
+Negative result - experimental outcome in which the expected effect is absent
+	Never ignore or discount negative results, they can help solve hard design questions
+	Experiments with negative results tell us something certain about production, design space, or limits
+	Tools and methods you create can outlive the experiment itself and be used in the future
+	Publishing your results can have a positive effect on the culture as a whole
+It is often difficult to find a 100% definite root cause, more often, we only find probably cause factors
+	Systems are complex
+	Reproducing the problem in a production system may not be an option
+After all this, it is important to write a postmortem about the issue
+The main ways to simplify and speed troubleshooting are to:
+	Build observability into each component from the ground up
+	Design systems with well-understood and observable interfaces between components
+
+
