@@ -247,4 +247,19 @@ The main ways to simplify and speed troubleshooting are to:
 	Build observability into each component from the ground up
 	Design systems with well-understood and observable interfaces between components
 
-
+Ch 12 - Emergency Response:
+==========================
+How a team responds to an emergency is very telling to how well an organization runs
+Test-Induced Emergency
+	Google often breaks the systems in a controlled way, trying to see if they achieve the expected failure.
+	However, sometimes the assumptions and actual results are different, and it uncovers new flaws
+Change-Induced Emergency
+	No matter how many tests you do, some configuration change you make can break a system
+	It's important to have quick and easy to ways to be able to rollback
+	Have systems that can alert very quickly but without spamming the channels
+Process-Induced Emergency
+	Sometimes our processes can be so automated that it may cause its own emergencies
+Every problem has a solution, and your highest priority should be to resolve the issue ASAP
+Make sure you don't repeat your mistakes by spreading information (postmorterms)
+Prepare for the worst
+Encourage proactive testing, don't rely on assumptions
