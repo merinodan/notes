@@ -2,16 +2,14 @@ PART II - Principles:
 ===========
 Ch 3 - Embracing Risk:
 ---------------
-SRE seeks to balance the risk of unavailability with the goals of rapid innovation and efficient server operations, so that
-	users' overall happiness - with features, service, and performance - is optimized.
+SRE seeks to balance the risk of unavailability with the goals of rapid innovation and efficient server operations, so that users' overall happiness - with features, service, and performance - is optimized.
 Costliness has two dimensions: the cost of redundant machine/comptue resources, and the opportunity cost
 At Google, instead of measuring by 'uptime', they measure by request success rate
 It is important to decide whether you need a different SLO for customers and your team
 	Consumer services vs Infastructure services
 You can decide to have planned downtime to help maintain the servers
 "Hope is not a strategy"
-An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between
-	innovation and reliability
+An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between innovation and reliability
 	
 Ch 4 - Service Level Objectives:
 -------------------------
@@ -26,8 +24,7 @@ Service Level Objective - target value or range of values for a service that is 
 Service Level Agreements - explicit or implicit contract with your users that includes consequences of meeting (or missing) the SLOs they contain
 	If there is no explicit consequence, you are looking at an SLO rather than an SLA
 
-You have to decide what you and your users care about; if you choose too many indicators, then it makes it hard to pay attention to the right
-	level of attention to the indicators that matter, while choosing too few may leave significant behaviors of your system unexamined.
+You have to decide what you and your users care about; if you choose too many indicators, then it makes it hard to pay attention to the right level of attention to the indicators that matter, while choosing too few may leave significant behaviors of your system unexamined.
 Services tend to fall into a few broad categories in terms of the SLIs they find relevant
 	User-facing serving systems - usually care about availability, latency, and throughput
 	Storage systems - often emphasize latency, availability, and durability
@@ -44,8 +41,7 @@ It's unrealistic to insist that SLOs will be met 100% of the time, as this can r
 Ch 5 - Eliminating Toil
 ----------------
 Overhead - administrative chores that need to get done: team meetings, setting/grading goals, snippets, and HR paperwork
-Toil is the kind of work tied to a production service that tends to be manual, repetitive, automatable, tactical, devoid of enduring value,
-	and that scales linearly as a service grows
+Toil is the kind of work tied to a production service that tends to be manual, repetitive, automatable, tactical, devoid of enduring value, and that scales linearly as a service grows
 	Manual - includes work such as manually running a script that automates some task
 	Repetitive - work you do over and over
 	Automatable - if a machine could accomplish a task just as well as a human, or the need for the task could be designed away, that is toil
@@ -58,10 +54,8 @@ Why is toil bad?
 
 Ch 6 - Monitoring Distributed Systems
 ------------------------------
-Monitoring - collecting, processing, aggregating, and displaying real-time quantitative data about a system, such as query counts
-	and types, error counts and types, processing times, and server lifetimes
-White-box monitoring - monitoring based on metrics exposed by the internals of the system, including logs, interfaces like the JVM
-	, or an HTTP handler that emits internal statistics
+Monitoring - collecting, processing, aggregating, and displaying real-time quantitative data about a system, such as query counts and types, error counts and types, processing times, and server lifetimes
+White-box monitoring - monitoring based on metrics exposed by the internals of the system, including logs, interfaces like the JVM, or an HTTP handler that emits internal statistics
 Black-box monitoring - testing externally visible behavior as a user would see it
 Alert - notification intended to be read by a human and is pushed to system such as a bug or ticket queue, email alias, or page
 	Also classified as tickets, email alerts, and pages
@@ -115,46 +109,33 @@ Automation is hard to implement, but more often than not it is worth it
 
 Ch 8 - Release Engineering
 -------------------
-Release engineering a is a relatively new discipline that encapsulates a solid (if not expert) understanding of source code management,
-compilers, build configuration languages, automated build tools, package managers, and installers
+Release engineering a is a relatively new discipline that encapsulates a solid (if not expert) understanding of source code management, compilers, build configuration languages, automated build tools, package managers, and installers
 Running reliable services requires running reliable release processes
 SREs should build binaries and configurations in a reproducible, automated way so releases are repeatable
 Release engineers make sure tools behave correctly by default and are adequately documented to make it easier for other teams
 Four major philosophies:
-	1. Self-service model - release best practices and tools should be developed to allow dev teams to achieve a high release
-		velocity because individual teams can decide how often and when to release new versions of products. Projects should
-		be automatically built and released using automated build systems and deployment tools
+	1. Self-service model - release best practices and tools should be developed to allow dev teams to achieve a high release velocity because individual teams can decide how often and when to release new versions of products. Projects should be automatically built and released using automated build systems and deployment tools
 	2. High velocity - frequent releases result in fewer changes between versions, this makes testing and troubleshooting easier
 	3. Hermetic builds - build tools must ensure consistency and repeatability (if it works on their machine, it should work on mine)
-		Builds should be hermetic - insensitive to libraries and software on the build machine - instead, they should depend on known
-		versions of build tools and must be self-contained. 
-			Cherry picking - a strategy that ensures that older build tools are versioned along with the project themselves, so
-				a bug in an older version can still be compiled with the compiler at the time, and not a newer version
-	4. Enforcement of policies and procedures - there should be several layers of security and access control to determine who can
-		perform certain operations when releasing a project. These things include but are not limited to: applying source code changes,
-		specifying actions to be performed during release, deploying new releases, changing build configs, etc.
+		Builds should be hermetic - insensitive to libraries and software on the build machine - instead, they should depend on known versions of build tools and must be self-contained. 
+			Cherry picking - a strategy that ensures that older build tools are versioned along with the project themselves, so a bug in an older version can still be compiled with the compiler at the time, and not a newer version
+	4. Enforcement of policies and procedures - there should be several layers of security and access control to determine who can perform certain operations when releasing a project. These things include but are not limited to: applying source code changes, specifying actions to be performed during release, deploying new releases, changing build configs, etc.
 Google has an atutomated release system called Rapid, that is intended to deliver scalable, hermetic, and reliable releases
 Building is handled by Blaze (now Bazel in open-source), which allows engineers to define build targets and specify dependencies
-Most major projects don't release directly from the mainline branch, instead bug fixes are submitted to the mainline and then
-	cherry picked into the branch
+Most major projects don't release directly from the mainline branch, instead bug fixes are submitted to the mainline and then cherry picked into the branch
 Google uses a contiuous test system that runs unit tests against the code in the mainline each time a change is submitted
-Packaging is handled by a the Midas Package Manager (MPM), which assembles packages based on Blaze rules. There is also a labeling
-	system that indiciates a package's location in the release process (dev, canary, production). MPM ensures that software is 
-	distributed to the production machines correctly
+Packaging is handled by a the Midas Package Manager (MPM), which assembles packages based on Blaze rules. There is also a labeling system that indiciates a package's location in the release process (dev, canary, production). MPM ensures that software is distributed to the production machines correctly
 Configuration management isn't as simple as it may seem, so you should evaluate your use case on a case-by-case basis
 You should implement release engineering early on in a project, as it becomes more expensive and difficult to retrofit later on
 
 Ch 9 - Simplicity
 ----------
 "The price of reliability is the pursuit of the utmost simplicity" - C.A.R. Hoare
-It is important as an SRE to balance system stability and agility, however, it is not a teeter-tottering of balance, rather, one
-	can help improve the other
-The virtue of boring - unlike most other things in life, "boring" is a positive attribute in software. We don't want programs to be
-	spontaneous and interesting; rather we want them to stick to the script and act predictably
+It is important as an SRE to balance system stability and agility, however, it is not a teeter-tottering of balance, rather, one can help improve the other
+The virtue of boring - unlike most other things in life, "boring" is a positive attribute in software. We don't want programs to be spontaneous and interesting; rather we want them to stick to the script and act predictably
 Essential complexity - the complexity inherent in a given situation that cannot be removed from a problem definition
 Accidental complexity - more fluid and can be resolved with engineering effort
-SRE teams should push back when accidental complexity is introducted into a system and constantly strive to elimate complexity
-	in systems they onboard
+SRE teams should push back when accidental complexity is introducted into a system and constantly strive to elimate complexity in systems they onboard
 Source control makes it easy to reverse changes, so it is safe to do large-scale purges of a source tree
 Every line of code changed or added to a project creates the potential for introducint new defects and bugs
 
@@ -174,8 +155,7 @@ There is a service reliability hierarchy, from bottom to top:
 Ch 10 - Practical Alerting:
 ==========================
 Monitoring is the bottom layer of the hierarchy of production needs
-Monitoring systems should allow for alerts for high-level service objectives while also retaining the granulairty to inspect
-	individual componenets as needed
+Monitoring systems should allow for alerts for high-level service objectives while also retaining the granulairty to inspect individual componenets as needed
 Google's monitoring service, Borgmon, is complimentary to Borg
 	Borgmon relies on a data exposition format, which enables mass data collection and low overheads
 	Metrics can be curled from the desired servers with /varz
@@ -185,8 +165,7 @@ Ch 11 - Being On-Call:
 Google SREs are on-call for the services they support
 Paging events take priority over almost every other task
 The "quantity" of on-call can be calculated by the percent of time spent by engineers on on-call duties
-	50% of an SRE's day should be spent engineering, of the remainder, no more than 25% can be spent on-call, leaving up to another
-		25% on other types of operational, nonproject work
+	50% of an SRE's day should be spent engineering, of the remainder, no more than 25% can be spent on-call, leaving up to another 25% on other types of operational, nonproject work
 	Multi-site teams include multiple teams that take over on-call duties at different parts of the day
 The "quality" of on-call can be calculated by the number of incidents that occur during an on-call shift
 	For each on-call shift, an engineer should have sufficient time to deal with any incidents and follow-up activities such as postmortems
@@ -194,8 +173,7 @@ There are often two distinct ways in which an individual may choose when faced w
 	Intuitive, automatic, and rapid action
 	Rational, focused, and deliberate cognitive functions
 When operating with complex systems, the latter is often much better
-The ideal methodology in incident management strikes the perfect balance of taking steps at the desired pace when enough data is available
-	to make a reasonable decision while simultaneously critically examining your assumptions
+The ideal methodology in incident management strikes the perfect balance of taking steps at the desired pace when enough data is available to make a reasonable decision while simultaneously critically examining your assumptions
 The most important on-call resources are:
 	Clear escalation paths
 	Well-defined incident-management procedures
