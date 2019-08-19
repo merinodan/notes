@@ -225,7 +225,7 @@ The main ways to simplify and speed troubleshooting are to:
 	Build observability into each component from the ground up
 	Design systems with well-understood and observable interfaces between components
 
-Ch 12 - Emergency Response:
+Ch 13 - Emergency Response:
 ==========================
 How a team responds to an emergency is very telling to how well an organization runs
 Test-Induced Emergency
@@ -241,3 +241,19 @@ Every problem has a solution, and your highest priority should be to resolve the
 Make sure you don't repeat your mistakes by spreading information (postmorterms)
 Prepare for the worst
 Encourage proactive testing, don't rely on assumptions
+
+Ch 14 - Managing Incidents:
+==========================
+Anatomy of an Unmanaged (Bad) Incident
+	Sharp focus on the technical problem, not thinking about the bigger picture
+	Poor communication
+	Freelancing, no coordination
+Elements of Incident Management Processes
+	Recursive separation of responsibilities, individuals should know their roles, which could include:
+		Incident command - assigns responsibilities and holds all undelegated positions
+		Operational work - works with incident commander to apply ops tools to the task at hand, should be the only group modifying the system
+		Communication - public face of the incident, sends emails to stakeholders and maintains incident documents
+		Planning - deals with long-term issues, like filing bugs, ordering dinner, arranging handoffs, etc.
+Have a recognized command post such as a "war room" or an IRC channel
+Have a live incident state document which can be referred to
+Have a clear, live handoff of the incident commander position when switching posts
