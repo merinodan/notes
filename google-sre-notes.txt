@@ -10,7 +10,7 @@ It is important to decide whether you need a different SLO for customers and you
 You can decide to have planned downtime to help maintain the servers
 "Hope is not a strategy"
 An error budget provides a common inventive that allows both product development and SRE to focus on finding the right balance between innovation and reliability
-	
+
 Ch 4 - Service Level Objectives:
 -------------------------
 Service Level Indicator - carefully defined quantitative measure of some aspect of the level of service that is provided
@@ -98,7 +98,7 @@ The evolution of automation follows a path:
 	4. Internally maintained system-specific automation
 	5. Systems that don't need any automation
 When developing autonomous systems, be careful of relying on implicit safetly signals that can work against you
-Automations prcesses can vary in three respsects: 
+Automations prcesses can vary in three respsects:
 	- Competence (accuracy)
 	- Latency (how quickly all steps are executed)
 	- Relevance (proportion of real-world process covered by automation)
@@ -117,7 +117,7 @@ Four major philosophies:
 	1. Self-service model - release best practices and tools should be developed to allow dev teams to achieve a high release velocity because individual teams can decide how often and when to release new versions of products. Projects should be automatically built and released using automated build systems and deployment tools
 	2. High velocity - frequent releases result in fewer changes between versions, this makes testing and troubleshooting easier
 	3. Hermetic builds - build tools must ensure consistency and repeatability (if it works on their machine, it should work on mine)
-		Builds should be hermetic - insensitive to libraries and software on the build machine - instead, they should depend on known versions of build tools and must be self-contained. 
+		Builds should be hermetic - insensitive to libraries and software on the build machine - instead, they should depend on known versions of build tools and must be self-contained.
 			Cherry picking - a strategy that ensures that older build tools are versioned along with the project themselves, so a bug in an older version can still be compiled with the compiler at the time, and not a newer version
 	4. Enforcement of policies and procedures - there should be several layers of security and access control to determine who can perform certain operations when releasing a project. These things include but are not limited to: applying source code changes, specifying actions to be performed during release, deploying new releases, changing build configs, etc.
 Google has an atutomated release system called Rapid, that is intended to deliver scalable, hermetic, and reliable releases
@@ -200,7 +200,7 @@ The second step is to Examine
 		A good way to implement this is to have a selection language to help with this filtering
 The last step is to Diagnose
 	There are a few generic practices to help you find out what's wrong:
-	Simplify and reduce - look at the connections between components 
+	Simplify and reduce - look at the connections between components
 		Split by component or do recursive bisections to find out where the problem lies
 	Ask "what", "where", and "why" - find out what a system is doing, why it's doing it, and where the resources are being used
 	What touched it last - trace what possible changes to a system might have caused something, or what deploy was before the issue
@@ -270,3 +270,11 @@ Define your criteria for when you are to write a postmortem
 Make sure to have a blameless postmortem culture and keep it constructive
 Encourage real-time collaboration with open comments and email notifications
 Postmortems can be shared more broadly either with a larger engineering team or an internal mailing list
+
+Ch 16 - Tracking Outages:
+=================================================
+Outalator is an internal Google tool to receive alerts sent by monitoring systems and tracks the progress on them
+This is used for analyzing data like amount of alerts per on-call shifts or seeing what services are causing the most problems
+Alerts are escalated as time goes on, or as severity gets worse
+Related alerts should be grouped together into a single 'incident'
+Alerts are tagged with relevant metadata such as "cause:network" so that future related alerts can be solved with a similar response
