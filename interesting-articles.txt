@@ -44,17 +44,23 @@ Date: March 14, 2019 (Pi day!)
 Date released: October 8, 2003
 Link: https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/
 Thoughts: An interesting article written by Joel Spolsky, the creator of StackOverflow. Talks about the interesting conception of Unicode and
-	the corresponding creation of UTF-8 and why it was necessary.
+    the corresponding creation of UTF-8 and why it was necessary.
 
 Article: Structure and Layout in System Dashboard Design (Series)
 Date: May 14, 2019
 Date released: April 4, 2019
 Link: http://onemogin.com/observability/dashboards/practitioners-guide-to-system-dashboard-design.html
 Thoughts: Written by observability expert Cory G. Watson, Watson writes about the how to create efficient and effective dashboards for your
-	users. Shows the benefits of using different costs and layouts, as well as how powerful providing context on your graphs can be.
+    users. Shows the benefits of using different costs and layouts, as well as how powerful providing context on your graphs can be.
 
 Article: How to write idempotent Bash scripts
 Date: July 8, 2019
 Date released: July 3, 2019
 Link: https://arslan.io/2019/07/03/how-to-write-idempotent-bash-scripts/
 Thoughts: Good reference for how to write idempotent (consistent) BASH scripts so you don't need counter-scripts for your scripts
+
+Article: Compiling Containers - Dockerfiles, LLVM, and BuildKit
+Date: April 14, 2021
+Date released: March 17, 2021
+Link: https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit/
+Thoughts: Draws interesting comparisons between building a docker image using buildkit and building binaries using LLVM (and how they are not so different).
